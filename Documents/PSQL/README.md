@@ -239,7 +239,7 @@ A table is in BCNF if:
 
 **Not in BCNF:**
 
-Here, the `Instructor` is dependent on the `Course`, which is not a super key.
+Here, the `Instructor` is dependent on the `Course`, which is not  super key.
 
 **Converted to BCNF:**
 
