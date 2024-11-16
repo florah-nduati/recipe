@@ -1,0 +1,50 @@
+.hero-section {
+  background-size: cover;
+  background-position: center ; 
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5rem;
+  align-items: center;
+}
+
+h1 {
+  font-size: 6rem;
+  font-weight: 800;
+  color: var(--color-blue);
+  text-align: center;
+}
+
+p {
+  font-size: 4rem;
+  color: var(--color-black);
+  font-weight: 900;
+  text-align: center;
+  margin: 2rem;
+}
+
+.cta-button {
+  text-decoration: none;
+  text-transform: uppercase;
+  margin-top: 3rem;
+  font-size: 2rem;
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  display: flex;
+  padding: 2rem;
+  border-radius: 50px;
+}
+
+.cta {
+  text-transform: capitalize;
+  text-decoration: none;
+  font-size: 2rem;
+  color: var(--color-white);
+}
+
+.button {
+  text-transform: capitalize;
+  text-decoration: none;
+  font-size: 2rem;
+}
