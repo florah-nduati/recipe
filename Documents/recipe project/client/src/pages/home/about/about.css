@@ -1,0 +1,222 @@
+/* About Us Container */
+.about-us-container {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  color: var(--color-black);
+  line-height: 1.6;
+}
+
+/* Section: Header */
+.about-us-section {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.about-us-title {
+  font-size: 2.5rem;
+  margin: 3rem 0;
+  padding: 1rem;
+  color: var(--color-blue);
+  background-color: var(--color-header);
+}
+
+.about-us-description {
+  font-size: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  color: var(--color-black);
+}
+
+/* Cards Section */
+.about-us-cards {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background: var(--color-footer);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+  padding: 1rem;
+  text-align: center;
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-9px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  color: #34495e;
+  margin-bottom: 0.5rem;
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* Mission Section */
+.about-us-mission {
+  background-color: #ecf0f1;
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+
+  img {
+    width: 50%;
+  }
+}
+
+.about-us-mission h2 {
+  font-size: 2rem;
+  color: var(--color-tersiary);
+  margin-bottom: 1rem;
+}
+
+.about-us-mission p {
+  font-size: 1.1rem;
+  width: 50%;
+  color: #444;
+}
+
+/* Story Section */
+.about-us-story {
+  padding: 2rem;
+  border-radius: 8px;
+  margin: 5rem;
+}
+
+/* Story Section with Video */
+.about-us-story-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 3rem;
+  border-radius: 8px;
+  background-color: var(--color-footer);
+  margin: 7rem 0;
+}
+
+.story-content {
+  flex: 1;
+  padding-right: 1rem;
+  max-width: 50%;
+}
+
+.story-content h2 {
+  font-size: 2rem;
+  color: var(--color-tersiary);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.story-content p {
+  font-size: 1.5rem;
+  color: var(--color-black);
+  line-height: 4rem;
+}
+
+/* Video container for larger screens */
+.story-video {
+  flex: 1;
+  max-width: 50%;
+}
+
+.story-video video {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile and Tablet Responsive Design */
+@media (max-width: 768px) {
+  .about-us-story-container {
+    flex-direction: column;
+    padding: 2rem;
+  }
+
+  .story-content {
+    max-width: 100%;
+    padding-right: 0;
+  }
+
+  .story-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .story-content p {
+    font-size: 1.2rem;
+    line-height: 2rem;
+  }
+
+  .story-video {
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+
+  .story-video video {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .story-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .story-content p {
+    font-size: 1rem;
+  }
+
+  .story-video video {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* Call-to-Action Section */
+.about-us-call-to-action {
+  text-align: center;
+  padding: 2rem;
+}
+
+.about-us-call-to-action h2 {
+  font-size: 2rem;
+  color: var(--color-tersiary);
+  margin-bottom: 1rem;
+}
+
+.about-us-call-to-action p {
+  font-size: 1.2rem;
+}
+
+.about-us-call-to-action a {
+  color: var(--color-blue);
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.about-us-call-to-action a:hover {
+  color: var(--color-primary);
+}

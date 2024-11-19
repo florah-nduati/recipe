@@ -1,12 +1,14 @@
+/* Hero Section */
 .hero-section {
   background-size: cover;
-  background-position: center ; 
+  background-position: center;
   height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 5rem;
   align-items: center;
+  padding: 0 1rem; /* Add some padding for smaller screens */
 }
 
 h1 {
@@ -14,6 +16,7 @@ h1 {
   font-weight: 800;
   color: var(--color-blue);
   text-align: center;
+  margin: 0; /* Remove any margin for better spacing */
 }
 
 p {
@@ -34,8 +37,11 @@ p {
   display: flex;
   padding: 2rem;
   border-radius: 50px;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Call-to-Action Text */
 .cta {
   text-transform: capitalize;
   text-decoration: none;
@@ -47,4 +53,60 @@ p {
   text-transform: capitalize;
   text-decoration: none;
   font-size: 2rem;
+}
+
+/* Responsive Design */
+
+/* For Tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 4rem; /* Reduce font size for smaller screens */
+  }
+
+  p {
+    font-size: 2.5rem; /* Smaller font size for paragraph */
+    margin: 1.5rem; /* Adjust margin for paragraph */
+  }
+
+  .cta-button {
+    padding: 1.5rem; /* Reduce padding for smaller screens */
+    font-size: 1.8rem; /* Make button text slightly smaller */
+  }
+
+  .cta {
+    font-size: 1.8rem; /* Adjust CTA text size */
+  }
+
+  .button {
+    font-size: 1.8rem; /* Adjust button text size */
+  }
+}
+
+/* For Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .hero-section {
+    height: 75vh; /* Reduce hero section height on small screens */
+  }
+
+  h1 {
+    font-size: 3rem; /* Further reduce font size for mobile */
+  }
+
+  p {
+    font-size: 2rem; /* Further reduce font size */
+    margin: 1rem; /* Adjust margin for better spacing */
+  }
+
+  .cta-button {
+    padding: 1.2rem; /* Reduce button padding */
+    font-size: 1.6rem; /* Smaller font size for button */
+  }
+
+  .cta {
+    font-size: 1.6rem; /* Adjust CTA text size */
+  }
+
+  .button {
+    font-size: 1.6rem; /* Adjust button text size */
+  }
 }

@@ -11,97 +11,79 @@ function SignUp() {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [profileImage, setProfileImage] = useState("");
   const [formError, setFormError] = useState(null);
 
   const navigate = useNavigate();
 
   const { mutate, isLoading } = useMutation({
     mutationFn: async function (newUser) {
-      const response = await fetch(`${apiBase}/users`, {
-        method: "POST",
-        body: JSON.stringify(newUser),
-        headers: { "Content-Type": "application/json" },
-      });
+      try {
+        const response = await fetch(`${apiBase}/users`, {
+          method: "POST",
+          body: JSON.stringify(newUser),
+          headers: { "Content-Type": "application/json" },
+        });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
+        // Check if the response is not OK (non-2xx status code)
+        if (!response.ok) {
+          const error = await response.json();
+          console.error("API error response:", error); // Log the API error for debugging
+          throw new Error(error.message || "Error occurred during sign up.");
+        }
+
+        // Parse and return the response data
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error("Error during mutation:", error); // Log the error for debugging
+        throw error; // Rethrow the error to be caught in onError
       }
-      const data = await response.json();
-      return data;
     },
     onSuccess: () => {
       setFormError("Successfully signed up!");
       setTimeout(() => navigate("/login"), 2000);
     },
-    onError: () => setFormError("Error signing up. Please try again."),
+    onError: (error) => {
+      console.error("Error signing up:", error); // Log the mutation error for debugging
+      setFormError(`Error signing up: ${error.message || "Please try again."}`);
+    },
   });
-
-  async function uploadImageToCloudinary(file) {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("v5fhffpd", "your_unsigned_preset"); // Replace with your Cloudinary upload preset
-
-    const response = await fetch(`https://api.cloudinary.com/v1_1/dbxiinf5v/image/upload`, {
-      method: "POST",
-      body: formData,
-    });
-
-    if (!response.ok) {
-      throw new Error("Image upload failed");
-    }
-
-    const data = await response.json();
-    return data.secure_url; // Return the uploaded image URL
-  }
-
-  async function generateDefaultAvatar(firstName) {
-    const initial = firstName[0]?.toUpperCase() || "A"; // Default to "A" if firstName is empty
-    const avatarUrl = `https://via.placeholder.com/150/000000/FFFFFF/?text=${initial}`;
-    return avatarUrl;
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
 
+    // Check if passwords match
     if (password !== confirmPassword) {
-      setFormError("Passwords do not match");
+      setFormError("Passwords do not match.");
       return;
     }
 
+    // Clear any previous error messages
     setFormError(null);
 
     try {
-      let imageUrl;
-      if (profileImage) {
-        imageUrl = await uploadImageToCloudinary(profileImage); // Upload image if provided
-      } else {
-        imageUrl = await generateDefaultAvatar(firstName); // Generate default avatar
-      }
-
       const newUser = {
         firstName,
         middleName,
         surName,
         emailAddress,
         password,
-        profileImage: imageUrl, // Use either uploaded image or default avatar
       };
 
+      // Trigger the mutation
       mutate(newUser);
     } catch (err) {
-      setFormError("Error uploading image. Please try again.");
-      console.error(err);
+      setFormError("Error submitting form. Please try again.");
+      console.error("Error during form submission:", err); // Log the error
     }
 
+    // Clear the form after submission
     setFirstName("");
     setMiddleName("");
     setSurName("");
     setEmailAddress("");
     setPassword("");
     setConfirmPassword("");
-    setProfileImage("");
   }
 
   return (
@@ -187,17 +169,6 @@ function SignUp() {
           required
         />
 
-        <label htmlFor="profile-image" className="label">
-          Profile Image
-        </label>
-        <input
-          type="file"
-          id="profile-image"
-          name="profileImage"
-          accept="image/*"
-          onChange={(e) => setProfileImage(e.target.files[0])}
-        />
-
         <button type="submit" id="signUpBtn" disabled={isLoading}>
           {isLoading ? "Loading..." : "Sign Up"}
         </button>
@@ -221,4 +192,3 @@ function SignUp() {
 }
 
 export default SignUp;
-

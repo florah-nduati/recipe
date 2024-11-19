@@ -6,15 +6,15 @@
 }
 
 :root {
-  --color-primary: #432E54;
-  --color-secondary:#4B4376;
+  --color-primary: #432e54;
+  --color-secondary: #4b4376;
   --color-background: rgb(219, 211, 211);
   --color-tersiary: rgb(233, 0, 116);
-  --color-header: #AE445A;
+  --color-header: #ae445a;
   --color-white: rgb(255, 255, 255);
   --color-blue: #1000b5;
-  --color-footer: #E8BCB9;
-  --color-black:#0d0d0d ;
+  --color-footer: #e8bcb9;
+  --color-black: #0d0d0d;
 }
 
 html {
@@ -34,4 +34,5 @@ html {
 }
 body {
   font-family: "Josefin Sans", serif;
+  background-color: var(--color-background);
 }

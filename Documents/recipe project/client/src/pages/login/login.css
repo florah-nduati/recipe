@@ -1,0 +1,110 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url("../../assets/signup.jpg") no-repeat center center;
+  background-size: cover;
+  background-position: center;
+}
+
+.login-form {
+  background-color: var(--color-footer);
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+}
+
+h2 {
+  font-size: 2.5rem;
+  color: var(--color-black);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.label {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+input {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 2rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.button-submit {
+  padding: 1.2rem;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button-submit:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}
+
+.button-submit:hover:not(:disabled) {
+  background-color: var(--color-header);
+}
+
+.form-error {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+}
+
+.login-prompt {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+}
+
+.login-prompt a {
+  font-size: 1rem;
+  color: var(--color-tersiary);
+  text-decoration: none;
+}
+
+.login-prompt a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .login-form {
+    padding: 2rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .label {
+    font-size: 1rem;
+  }
+
+  input {
+    font-size: 1rem;
+  }
+
+  .btn-submit {
+    font-size: 1.1rem;
+  }
+}
