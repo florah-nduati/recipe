@@ -11,3 +11,34 @@
     font-size: 2rem;
   }
 }
+.footer-logo-img {
+  width: 100px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.footer-info p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+.footer-links {
+  margin-top: 15px;
+}
+
+.footer-link {
+  color:var(--color-black);
+  font-size: 1.2rem;
+  margin: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  color: #f0a500;
+}
+
+.footer-link svg {
+  margin-right: 8px;
+}

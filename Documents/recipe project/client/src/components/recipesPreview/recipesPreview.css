@@ -1,0 +1,52 @@
+/* PersonalBlogsPreview.css */
+
+.loading, .error, .no-blogs h3 {
+    color: #555;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.header {
+    color:var(--color-blue);
+    font-size: 2rem;
+    text-align: center;
+    margin: 30px 0;
+    font-weight: 700;
+}
+
+.no-blogs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.create-link {
+    color: #007bff;
+    font-size: 1rem;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.create-link:hover {
+    text-decoration: underline;
+}
+
+.blogs-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.blog-preview {
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.blog-preview:hover {
+    transform: translateY(-5px);
+}

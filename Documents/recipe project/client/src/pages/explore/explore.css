@@ -1,13 +1,14 @@
+
 .explore-container {
   padding: 20px;
   font-family: "josefin", sans-serif;
-  background-color: var(--color-background);
+  background-color:var(--color-background);
 }
 
 .explore-container h2 {
   text-align: center;
   font-size: 4rem;
-  color: var(--color-tersiary);
+  color:var(--color-tersiary);
   margin-bottom: 20px;
 }
 
@@ -28,11 +29,11 @@ form input[type="text"] {
 }
 
 form button {
-  padding: 10px 15px;
+  padding: 15px 15px;
   width: max-content;
   border: none;
   border-radius: 5px;
-  background-color: var(--color-tersiary);
+  background-color:var(--color-tersiary);
   color: var(--color-white);
   font-size: 1rem;
   cursor: pointer;
@@ -65,9 +66,8 @@ form button:disabled {
   padding: 0 20px;
 }
 
-.recipe-card,
-.recipe-preview {
-  background-color: var(--color-footer);
+.recipe-card, .recipe-preview {
+  background-color:var(--color-footer);
   border: 1px solid var(--color-primary);
   border-radius: 10px;
   overflow: hidden;
@@ -75,13 +75,11 @@ form button:disabled {
   transition: transform 0.2s ease;
 }
 
-.recipe-card:hover,
-.recipe-preview:hover {
+.recipe-card:hover, .recipe-preview:hover {
   transform: scale(1.03);
 }
 
-.recipe-card img,
-.recipe-preview img {
+.recipe-card img, .recipe-preview img {
   width: 100%;
   height: 250px;
   padding: 1rem;
@@ -89,47 +87,44 @@ form button:disabled {
   border-bottom: 1px solid #e0e0e0;
 }
 
-.recipe-card h3,
-.recipe-preview h3 {
+.recipe-card h3, .recipe-preview h3 {
   font-size: 1.5rem;
   text-transform: capitalize;
   margin: 15px 10px;
   text-align: center;
-  color: var(--color-blue);
+  color:var(--color-blue);
 }
 
-.recipe-card p,
-.recipe-preview p {
+.recipe-card p, .recipe-preview p {
   font-size: 1rem;
   margin: 10px;
   color: var(--color-black);
 }
 
-.recipe-card button,
-.recipe-preview-button {
+.recipe-card button, .recipe-preview-button {
   display: block;
   margin: 15px auto;
   padding: 10px 15px;
-  background-color: var(--color-blue);
-  color: var(--color-white);
+  background-color:var(--color-blue);
+  color:var(--color-white);
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
 }
 
-.recipe-card button:hover,
-.recipe-preview-button:hover {
-  background-color: var(--color-header);
+.recipe-card button:hover , .recipe-preview-button:hover{
+  background-color:var(--color-header);
 }
 
-.error,
-.loading {
+
+.error, .loading {
   text-align: center;
   font-size: 1.2rem;
-  color: var(--color-tersiary);
+  color:var(--color-tersiary);
   margin: 20px;
 }
+
 
 @media (max-width: 768px) {
   .recipe-cards {
@@ -146,3 +141,5 @@ form button:disabled {
     gap: 10px;
   }
 }
+
+  

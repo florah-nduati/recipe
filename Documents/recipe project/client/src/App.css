@@ -6,7 +6,7 @@
 }
 
 :root {
-  --color-primary: #432e54;
+  --color-primary: #37005b;
   --color-secondary: #4b4376;
   --color-background: rgb(219, 211, 211);
   --color-tersiary: rgb(233, 0, 116);
@@ -34,5 +34,5 @@ html {
 }
 body {
   font-family: "Josefin Sans", serif;
-  background-color: var(--color-background);
+  /* background-color: var(--color-background); */
 }

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
 import apiBase from "../../utils/api";
 import useUserStore from "../../store/userStore";
-import "./Login.css"; // Assuming you will create a Login.css file for styles
+import "./login.css";
 
 function Login() {
   const [emailAddress, setEmailAddress] = useState("");

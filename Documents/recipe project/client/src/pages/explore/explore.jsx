@@ -5,18 +5,19 @@ import { useNavigate } from "react-router-dom";
 import RecipePreview from "../../components/recipePreview/recipePreview";
 import apiBase from "../../utils/api";
 
-const apiKey = "2571f69dbe754661a9c1366cc078e2f7"; // Spoonacular API Key
-
 function Explore() {
-  const [query, setQuery] = useState(""); // Search query
+  const [query, setQuery] = useState("");
   const [filters, setFilters] = useState({
-    cuisine: "",
-    mealType: "",
-    diet: "",
+    category: "",
+    area: "",
+    ingredient: "",
   });
-  const [externalRecipes, setExternalRecipes] = useState([]); // External API recipes
+  const [externalRecipes, setExternalRecipes] = useState([]);
   const [loadingExternal, setLoadingExternal] = useState(false);
   const [errorExternal, setErrorExternal] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [areas, setAreas] = useState([]);
+  const [ingredients, setIngredients] = useState([]);
 
   const navigate = useNavigate();
 
@@ -40,26 +41,66 @@ function Explore() {
     },
   });
 
-  // Fetch recipes from the external API
+  // Fetch recipes from TheMealDB API
   const fetchExternalRecipes = async () => {
     setLoadingExternal(true);
     setErrorExternal("");
     try {
-      const response = await fetch(
-        `https://api.spoonacular.com/recipes/complexSearch?query=${query}&cuisine=${filters.cuisine}&type=${filters.mealType}&diet=${filters.diet}&apiKey=${apiKey}&number=10`,
-      );
+      let url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`;
+      if (!query) {
+        if (filters.category) {
+          url = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${filters.category}`;
+        } else if (filters.area) {
+          url = `https://www.themealdb.com/api/json/v1/1/filter.php?a=${filters.area}`;
+        } else if (filters.ingredient) {
+          url = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${filters.ingredient}`;
+        } else {
+          url = `https://www.themealdb.com/api/json/v1/1/search.php?f=a`; // Default to meals starting with 'a'
+        }
+      }
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Failed to fetch recipes from TheMealDB API.");
+      }
+
       const data = await response.json();
-      setExternalRecipes(data.results || []);
+      setExternalRecipes(data.meals || []);
     } catch (err) {
       setErrorExternal(
-        "Error fetching recipes from external API. Please try again.",
+        "Error fetching recipes from TheMealDB API. Please try again."
       );
     } finally {
       setLoadingExternal(false);
     }
   };
 
-  // Fetch external recipes when filters or query changes
+  // Fetch categories, areas, and ingredients for filters
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      try {
+        const [categoriesRes, areasRes, ingredientsRes] = await Promise.all([
+          fetch("https://www.themealdb.com/api/json/v1/1/list.php?c=list"),
+          fetch("https://www.themealdb.com/api/json/v1/1/list.php?a=list"),
+          fetch("https://www.themealdb.com/api/json/v1/1/list.php?i=list"),
+        ]);
+
+        const categoriesData = await categoriesRes.json();
+        const areasData = await areasRes.json();
+        const ingredientsData = await ingredientsRes.json();
+
+        setCategories(categoriesData.meals || []);
+        setAreas(areasData.meals || []);
+        setIngredients(ingredientsData.meals || []);
+      } catch (err) {
+        console.error("Error fetching filter options:", err);
+      }
+    };
+
+    fetchFilterOptions();
+  }, []);
+
+  // Fetch external recipes when query or filters change
   useEffect(() => {
     fetchExternalRecipes();
   }, [query, filters]);
@@ -94,34 +135,41 @@ function Explore() {
 
       <div className="filters">
         <select
-          onChange={(e) => setFilters({ ...filters, cuisine: e.target.value })}
-          value={filters.cuisine}
+          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+          value={filters.category}
         >
-          <option value="">All Cuisines</option>
-          <option value="Italian">Italian</option>
-          <option value="American">American</option>
-          <option value="Chinese">Chinese</option>
-          <option value="Mexican">Mexican</option>
+          <option value="">All Categories</option>
+          {categories.map((cat) => (
+            <option key={cat.strCategory} value={cat.strCategory}>
+              {cat.strCategory}
+            </option>
+          ))}
         </select>
 
         <select
-          onChange={(e) => setFilters({ ...filters, mealType: e.target.value })}
-          value={filters.mealType}
+          onChange={(e) => setFilters({ ...filters, area: e.target.value })}
+          value={filters.area}
         >
-          <option value="">All Meal Types</option>
-          <option value="Breakfast">Breakfast</option>
-          <option value="Lunch">Lunch</option>
-          <option value="Dinner">Dinner</option>
+          <option value="">All Areas</option>
+          {areas.map((area) => (
+            <option key={area.strArea} value={area.strArea}>
+              {area.strArea}
+            </option>
+          ))}
         </select>
 
         <select
-          onChange={(e) => setFilters({ ...filters, diet: e.target.value })}
-          value={filters.diet}
+          onChange={(e) =>
+            setFilters({ ...filters, ingredient: e.target.value })
+          }
+          value={filters.ingredient}
         >
-          <option value="">All Diets</option>
-          <option value="Vegetarian">Vegetarian</option>
-          <option value="Vegan">Vegan</option>
-          <option value="Gluten-Free">Gluten-Free</option>
+          <option value="">All Ingredients</option>
+          {ingredients.slice(0, 20).map((ing) => ( // Limit options for performance
+            <option key={ing.strIngredient} value={ing.strIngredient}>
+              {ing.strIngredient}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -155,11 +203,12 @@ function Explore() {
           <p>Loading external recipes...</p>
         ) : (
           externalRecipes.map((recipe) => (
-            <div className="recipe-card" key={`external-${recipe.id}`}>
-              <img src={recipe.image} alt={recipe.title} />
-              <h3>{recipe.title}</h3>
-              <p>Cooking Time: {recipe.readyInMinutes} minutes</p>
-              <button onClick={() => viewFullRecipe(recipe.id)}>
+            <div className="recipe-card" key={`external-${recipe.idMeal}`}>
+              <img src={recipe.strMealThumb} alt={recipe.strMeal} />
+              <h3>{recipe.strMeal}</h3>
+              <p>Category: {recipe.strCategory}</p>
+              <p>Area: {recipe.strArea}</p>
+              <button onClick={() => viewFullRecipe(recipe.idMeal)}>
                 Read More
               </button>
             </div>
@@ -171,3 +220,4 @@ function Explore() {
 }
 
 export default Explore;
+

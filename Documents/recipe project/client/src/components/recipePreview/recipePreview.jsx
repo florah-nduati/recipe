@@ -6,7 +6,6 @@ function RecipePreview({
   title,
   authorName,
   imageUrl,
-  description,
   cookingTime,
   category,
   id,
@@ -21,7 +20,6 @@ function RecipePreview({
         <h3 className="recipe-preview-title"> {title}</h3>
         <p className="recipe-preview-author">by {authorName}</p>
 
-        <p className="recipe-preview-description"> {description}</p>
         <p className="recipe-preview-cookingTime">
           cooking time: {cookingTime}
         </p>

@@ -10,8 +10,8 @@ import SignUp from "./pages/signup/signup";
 import Footer from "./components/footer/footer";
 import Create from "./pages/create/create";
 import FullRecipe from "./pages/full recipe/fullRecipe";
-//import Library from "./pages/library/library";
-//import Profile from "./pages/profile/profile";
+import ExternalFullRecipe from "./pages/fullRecipeExternal/fullRecipeExternal";
+import Recipes from "./pages/my recipes/myRecipes";
 //import Edit from "./pages/Edit/edit";
 
 const client = new QueryClient();
@@ -46,6 +46,22 @@ function App() {
             element={
               <Protected>
                 <Create />
+              </Protected>
+            }
+          />
+          <Route
+            path="/full-recipe/:id" 
+            element={
+              <Protected>
+                <ExternalFullRecipe />
+              </Protected>
+            }
+          />
+          <Route
+            path="/recipes" 
+            element={
+              <Protected>
+                <Recipes />
               </Protected>
             }
           />

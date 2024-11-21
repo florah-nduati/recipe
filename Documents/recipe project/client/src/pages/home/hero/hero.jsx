@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import "./hero.css";
 
 // Import images
 import hero1 from "../../../assets/hero.jpg";
@@ -8,6 +7,7 @@ import hero3 from "../../../assets/hero3.jpg";
 import hero4 from "../../../assets/hero4.jpg";
 import hero5 from "../../../assets/hero2.jpg";
 import hero6 from "../../../assets/hero6.jpg";
+import "./hero.css";
 
 function Hero() {
   const images = [hero1, hero2, hero3, hero4, hero5, hero6];
