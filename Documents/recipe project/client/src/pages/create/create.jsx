@@ -109,7 +109,7 @@ const Create = () => {
   };
 
   return (
-    <div className="write-page">
+    <div className="create-page">
       <h2>Create a New Recipe</h2>
       <form onSubmit={handleSubmit} className="write-form">
         {error && <p className="error-message">{error}</p>}

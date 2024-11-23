@@ -1,0 +1,44 @@
+.bookmarks-container {
+    padding: 20px;
+  }
+  
+  .bookmarks-container h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .bookmarked-backend,
+  .bookmarked-external {
+    margin-bottom: 30px;
+  }
+  
+  .bookmarked-backend h3,
+  .bookmarked-external h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .recipe-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .recipe-card img {
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  
+  .recipe-card h3 {
+    margin: 10px 0;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 20px;
+  }
+  

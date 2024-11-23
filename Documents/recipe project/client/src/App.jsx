@@ -12,7 +12,7 @@ import Create from "./pages/create/create";
 import FullRecipe from "./pages/full recipe/fullRecipe";
 import ExternalFullRecipe from "./pages/fullRecipeExternal/fullRecipeExternal";
 import Recipes from "./pages/my recipes/myRecipes";
-//import Edit from "./pages/Edit/edit";
+import BookmarksPage from "./pages/bookmark/bookmark";
 
 const client = new QueryClient();
 
@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/sign up" element={<SignUp />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route
             path="/explore"
             element={
@@ -62,6 +62,14 @@ function App() {
             element={
               <Protected>
                 <Recipes />
+              </Protected>
+            }
+          />
+          <Route
+            path="/bookmarks" 
+            element={
+              <Protected>
+                <BookmarksPage />
               </Protected>
             }
           />

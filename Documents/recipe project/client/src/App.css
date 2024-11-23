@@ -22,17 +22,7 @@ html {
   font-family: "Josefin Sans", sans-serif;
 }
 
-.title {
-  color: var(--color-secondary);
-  font-size: 20px;
-  padding: 2rem;
-  text-align: center;
-  text-transform: capitalize;
-  font-size: 3rem;
-  margin: 2rem 0;
-  background-color: var(--color-tersiary);
-}
+
 body {
   font-family: "Josefin Sans", serif;
-  /* background-color: var(--color-background); */
 }

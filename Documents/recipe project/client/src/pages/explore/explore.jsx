@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FaRegSave } from "react-icons/fa";
+import { FcLike } from "react-icons/fc";
 import "./explore.css";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
@@ -18,10 +20,14 @@ function Explore() {
   const [categories, setCategories] = useState([]);
   const [areas, setAreas] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+  const [bookmarkedRecipes, setBookmarkedRecipes] = useState(new Set());
+  const [likedRecipes, setLikedRecipes] = useState(new Set()); // State for likes
+  const [likesCount, setLikesCount] = useState({}); // Track likes count for each recipe
+  const [searchTriggered, setSearchTriggered] = useState(false); // To track when the search is triggered
 
   const navigate = useNavigate();
 
-  // Fetch recipes from the backend
+  // Fetch backend recipes
   const {
     isLoading: loadingBackend,
     isError: errorBackend,
@@ -41,8 +47,10 @@ function Explore() {
     },
   });
 
-  // Fetch recipes from TheMealDB API
+  // Fetch external recipes based on query and filters
   const fetchExternalRecipes = async () => {
+    if (!searchTriggered) return; // Only fetch when search is triggered
+
     setLoadingExternal(true);
     setErrorExternal("");
     try {
@@ -75,7 +83,7 @@ function Explore() {
     }
   };
 
-  // Fetch categories, areas, and ingredients for filters
+  // Fetch filter options for categories, areas, and ingredients
   useEffect(() => {
     const fetchFilterOptions = async () => {
       try {
@@ -100,20 +108,86 @@ function Explore() {
     fetchFilterOptions();
   }, []);
 
-  // Fetch external recipes when query or filters change
+  // Fetch external recipes only when searchTriggered is true
   useEffect(() => {
     fetchExternalRecipes();
-  }, [query, filters]);
+  }, [searchTriggered, query, filters]);
+
+  // Fetch all bookmarked recipes on initial load
+  useEffect(() => {
+    const fetchBookmarkedRecipes = async () => {
+      try {
+        const response = await fetch(`${apiBase}/bookmarked-recipes`, {
+          credentials: "include",
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch bookmarked recipes.");
+        }
+
+        const data = await response.json();
+        const bookmarkedIds = new Set(data.bookmarks.map((recipe) => recipe.id));
+        setBookmarkedRecipes(bookmarkedIds);
+      } catch (err) {
+        console.error("Error fetching bookmarks:", err);
+      }
+    };
+
+    fetchBookmarkedRecipes();
+  }, []);
 
   // Handle search input changes
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchExternalRecipes();
+    setSearchTriggered(true); // Trigger search when button is clicked
   };
 
   // Handle navigation to full recipe page
   const viewFullRecipe = (id) => {
     navigate(`/full-recipe/${id}`);
+  };
+
+  // Toggle bookmark status
+  const toggleBookmark = async (recipeId, isExternal) => {
+    try {
+      if (bookmarkedRecipes.has(recipeId)) {
+        // Remove bookmark
+        await fetch(`${apiBase}/recipes/${recipeId}/bookmark`, {
+          method: "DELETE",
+          credentials: "include",
+        });
+        setBookmarkedRecipes((prev) => {
+          const updated = new Set(prev);
+          updated.delete(recipeId);
+          return updated;
+        });
+      } else {
+        // Add bookmark
+        await fetch(`${apiBase}/recipes/${recipeId}/bookmark`, {
+          method: "POST",
+          credentials: "include",
+        });
+        setBookmarkedRecipes((prev) => new Set(prev.add(recipeId)));
+      }
+    } catch (err) {
+      console.error("Error updating bookmark:", err);
+    }
+  };
+
+  // Toggle like status and increase like count
+  const toggleLike = (recipeId) => {
+    if (!likedRecipes.has(recipeId)) {
+      // Add like for the recipe
+      setLikedRecipes((prevLikes) => {
+        const newLikes = new Set(prevLikes);
+        newLikes.add(recipeId);
+        return newLikes;
+      });
+      // Increment the like count for the recipe
+      setLikesCount((prevLikesCount) => ({
+        ...prevLikesCount,
+        [recipeId]: (prevLikesCount[recipeId] || 0) + 1,
+      }));
+    }
   };
 
   return (
@@ -139,11 +213,15 @@ function Explore() {
           value={filters.category}
         >
           <option value="">All Categories</option>
-          {categories.map((cat) => (
-            <option key={cat.strCategory} value={cat.strCategory}>
-              {cat.strCategory}
-            </option>
-          ))}
+          {categories.length > 0 ? (
+            categories.map((cat) => (
+              <option key={cat.strCategory} value={cat.strCategory}>
+                {cat.strCategory}
+              </option>
+            ))
+          ) : (
+            <option value="">Loading categories...</option>
+          )}
         </select>
 
         <select
@@ -151,11 +229,15 @@ function Explore() {
           value={filters.area}
         >
           <option value="">All Areas</option>
-          {areas.map((area) => (
-            <option key={area.strArea} value={area.strArea}>
-              {area.strArea}
-            </option>
-          ))}
+          {areas.length > 0 ? (
+            areas.map((area) => (
+              <option key={area.strArea} value={area.strArea}>
+                {area.strArea}
+              </option>
+            ))
+          ) : (
+            <option value="">Loading areas...</option>
+          )}
         </select>
 
         <select
@@ -165,11 +247,15 @@ function Explore() {
           value={filters.ingredient}
         >
           <option value="">All Ingredients</option>
-          {ingredients.slice(0, 20).map((ing) => ( // Limit options for performance
-            <option key={ing.strIngredient} value={ing.strIngredient}>
-              {ing.strIngredient}
-            </option>
-          ))}
+          {ingredients.length > 0 ? (
+            ingredients.slice(0, 20).map((ing) => (
+              <option key={ing.strIngredient} value={ing.strIngredient}>
+                {ing.strIngredient}
+              </option>
+            ))
+          ) : (
+            <option value="">Loading ingredients...</option>
+          )}
         </select>
       </div>
 
@@ -194,6 +280,10 @@ function Explore() {
               cookingTime={recipe.cookingTime}
               category={recipe.category}
               id={recipe.id}
+              isBookmarked={bookmarkedRecipes.has(recipe.id)}
+              toggleBookmark={() => toggleBookmark(recipe.id, false)}
+              likesCount={likesCount[recipe.id] || 0}
+              toggleLike={() => toggleLike(recipe.id)}
             />
           ))
         )}
@@ -202,16 +292,21 @@ function Explore() {
         {loadingExternal ? (
           <p>Loading external recipes...</p>
         ) : (
+          externalRecipes.length > 0 &&
           externalRecipes.map((recipe) => (
-            <div className="recipe-card" key={`external-${recipe.idMeal}`}>
-              <img src={recipe.strMealThumb} alt={recipe.strMeal} />
-              <h3>{recipe.strMeal}</h3>
-              <p>Category: {recipe.strCategory}</p>
-              <p>Area: {recipe.strArea}</p>
-              <button onClick={() => viewFullRecipe(recipe.idMeal)}>
-                Read More
-              </button>
-            </div>
+            <RecipePreview
+              key={recipe.idMeal}
+              title={recipe.strMeal}
+              authorName="External Author"
+              imageUrl={recipe.strMealThumb}
+              cookingTime="N/A"
+              category="N/A"
+              id={recipe.idMeal}
+              isBookmarked={bookmarkedRecipes.has(recipe.idMeal)}
+              toggleBookmark={() => toggleBookmark(recipe.idMeal, true)}
+              likesCount={likesCount[recipe.idMeal] || 0}
+              toggleLike={() => toggleLike(recipe.idMeal)}
+            />
           ))
         )}
       </div>
@@ -220,4 +315,6 @@ function Explore() {
 }
 
 export default Explore;
+
+
 

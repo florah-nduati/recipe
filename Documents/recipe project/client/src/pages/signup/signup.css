@@ -1,55 +1,68 @@
+/* Background Styling */
 .sign-up {
   background: url("../../assets/signup.jpg");
   background-size: cover;
-  background-position: left;
-  height: 80vh;
+  background-position: center;
+  height: auto;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   padding: 1rem;
 }
 
+/* Form Styling */
 .signup-form {
-  width: 70%;
-  max-width: 500px;
-  padding: 2rem;
   background-color: var(--color-header);
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
+  padding: 3rem;
   border-radius: 8px;
-  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column; 
 }
 
 .signup-form h2 {
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--color-white);
 }
 
-.label,
+/* Label Styling */
+.label {
+  display: inline-block;
+  width: 48%;
+  margin: 0.5rem 1%;
+  font-size: 1.3rem;
+  text-align: left;
+  color: var(--color-white);
+}
+
+/* Input Field Styling */
 input[type="text"],
 input[type="password"],
 input[type="email"] {
   display: inline-block;
   width: 48%;
   margin: 0.5rem 1%;
-  font-size: 1.3rem;
-  gap: 2rem;
   padding: 0.5rem;
-}
-
-.label {
-  text-align: left;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="email"] {
+  font-size: 1.3rem;
   background-color: var(--color-white);
   border: 1px solid var(--color-background);
-  gap: 2rem;
   border-radius: 4px;
   text-align: center;
 }
 
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  border-color: var(--color-secondary);
+  outline: none;
+}
+
+/* Submit Button Styling */
 button[type="submit"] {
   width: 100%;
   margin-top: 3rem;
@@ -63,10 +76,30 @@ button[type="submit"] {
   transition: background 0.3s;
 }
 
-button[type="submit"]:hover {
+button[type="submit"]:disabled {
+  background-color: var(--color-background);
+  cursor: not-allowed;
+}
+
+button[type="submit"]:hover:not(:disabled) {
   background-color: var(--color-tersiary);
 }
 
+/* Error and Success Message Styling */
+.message {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+}
+
+.message.green {
+  color: green;
+}
+
+.message.red {
+  color: red;
+}
+
+/* Signup Prompt Styling */
 .signup-prompt {
   margin-top: 1rem;
   font-size: 0.9rem;
@@ -78,4 +111,6 @@ button[type="submit"]:hover {
   font-size: 1.3rem;
 }
 
-/* Removed #password-specific styles to unify appearance */
+.signup-prompt a:hover {
+  text-decoration: underline;
+}

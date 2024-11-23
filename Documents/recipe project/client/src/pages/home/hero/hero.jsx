@@ -38,11 +38,6 @@ function Hero() {
           Start cooking now
         </a>
       </div>
-      <div>
-        <a href="/login" className="button">
-          Explore
-        </a>
-      </div>
     </div>
   );
 }

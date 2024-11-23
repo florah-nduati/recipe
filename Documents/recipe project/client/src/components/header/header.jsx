@@ -66,7 +66,7 @@ function Header() {
                 </a>
               </li>
               <li className="navigation-item">
-                <a href="/bookmark" className="navigation-link">
+                <a href="/bookmarks" className="navigation-link">
                   <BiSolidBookBookmark className="nav-icon" />
                   <span className="nav-text">bookmark</span>
                 </a>

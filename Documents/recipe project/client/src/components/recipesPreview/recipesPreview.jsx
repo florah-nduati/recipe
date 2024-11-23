@@ -4,7 +4,6 @@ import PersonalRecipePreview from '../personalRecipePreview/personalRecipePrevie
 import { Link } from 'react-router-dom';
 import apiBase from '../../utils/api';
 import usePersonalRecipesStore from '../../store/personalRecipeStore';
-import "./recipesPreview.css";
 
 function PersonalRecipesPreview() {
     const recipes = usePersonalRecipesStore((state) => state.recipes);

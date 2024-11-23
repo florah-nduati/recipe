@@ -2,7 +2,7 @@
 .explore-container {
   padding: 20px;
   font-family: "josefin", sans-serif;
-  background-color:var(--color-background);
+  background-color:var(--color-bac);
 }
 
 .explore-container h2 {
@@ -118,6 +118,38 @@ form button:disabled {
 }
 
 
+.like-btn,
+.bookmark-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 8px;
+  border: none;
+  border-radius: 50px;
+  background-color: var(--color-primary);
+  color:var(--color-white);
+  font-size: 14px;
+  cursor: pointer;
+  margin:1rem;
+  margin-bottom: 1rem;
+}
+
+.like-btn:hover,
+.bookmark-btn:hover {
+  color: #0056b3;
+}
+
+.bookmark-btn.bookmarked {
+  color: var(--color-white);
+  background-color: var(--color-tersiary);
+}
+
+.error {
+  color: red;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 20px;
+}
 .error, .loading {
   text-align: center;
   font-size: 1.2rem;
