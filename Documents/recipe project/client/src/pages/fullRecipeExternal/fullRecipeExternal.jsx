@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import "./fullExternalRecipe.css";
 
 function ExternalFullRecipe() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -11,37 +11,66 @@ function ExternalFullRecipe() {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
+        // Log the ID being used to fetch the recipe for debugging
+        console.log("Fetching recipe with ID:", id);
+        
+        // Ensure the id exists before making the request
+        if (!id) {
+          throw new Error("No recipe ID found in URL");
+        }
+
         setLoading(true);
         const response = await fetch(
           `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
         );
+        
         if (!response.ok) {
-          throw new Error("Failed to fetch recipe details");
+          // If the response is not OK, throw an error
+          throw new Error(`Failed to fetch recipe details. Status: ${response.status}`);
         }
+
         const data = await response.json();
-        setRecipe(data.meals ? data.meals[0] : null);
+        
+        // Debugging the API response
+        console.log("API Response:", data);
+
+        if (data.meals && data.meals.length > 0) {
+          setRecipe(data.meals[0]); // Set the recipe if available
+        } else {
+          throw new Error("Recipe not found with the provided ID");
+        }
       } catch (err) {
-        setError("Error fetching recipe details. Please try again.");
+        console.error("Error:", err.message); // Log the error
+        setError(`Error fetching recipe details: ${err.message}`);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRecipe();
-  }, [id]);
+  }, [id]); // Re-fetch when the `id` changes
 
+  // Loading state
   if (loading) {
     return <p className="error">Loading recipe details...</p>;
   }
 
+  // Error state
   if (error) {
     return <p className="error">{error}</p>;
   }
 
+  // If no recipe is found
   if (!recipe) {
-    return <p>No recipe found.</p>;
+    return (
+      <div className="recipe">
+        <h2>Recipe Not Found</h2>
+        <p>We couldn't find a recipe with the given ID. Please try another.</p>
+      </div>
+    );
   }
 
+  // Render the recipe details
   return (
     <div className="recipe">
       <h1>{recipe.strMeal}</h1>
@@ -77,7 +106,11 @@ function ExternalFullRecipe() {
           <iframe
             width="560"
             height="315"
-            src={`https://www.youtube.com/embed/${recipe.strYoutube.split("v=")[1]}`}
+            src={
+              recipe.strYoutube.includes("v=")
+                ? `https://www.youtube.com/embed/${recipe.strYoutube.split("v=")[1]}`
+                : recipe.strYoutube
+            }
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -98,4 +131,3 @@ function ExternalFullRecipe() {
 }
 
 export default ExternalFullRecipe;
-

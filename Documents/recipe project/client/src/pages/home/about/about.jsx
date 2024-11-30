@@ -85,7 +85,7 @@ function AboutUs() {
       <section className="about-us-call-to-action">
         <h2>Join Us</h2>
         <p>
-          Be a part of our journey! <a href="/signup">Sign up today</a> or{" "}
+          Be a part of our journey! <a href="/sign-up">Sign up today</a> or{" "}
           <a href="/contact">contact us</a> to learn how we can help you achieve
           your goals.
         </p>

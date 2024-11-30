@@ -24,10 +24,9 @@ function SignUp() {
           headers: { "Content-Type": "application/json" },
         });
 
-        // Check if the response is not OK (non-2xx status code)
         if (!response.ok) {
           const error = await response.json();
-          console.error("API error response:", error); // Log the API error for debugging
+          console.error("API error response:", error); 
           throw new Error(error.message || "Error occurred during sign up.");
         }
 
@@ -44,7 +43,7 @@ function SignUp() {
       setTimeout(() => navigate("/login"), 2000);
     },
     onError: (error) => {
-      console.error("Error signing up:", error); // Log the mutation error for debugging
+      console.error("Error signing up:", error);
       setFormError(`Error signing up: ${error.message || "Please try again."}`);
     },
   });
@@ -52,13 +51,11 @@ function SignUp() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    // Check if passwords match
     if (password !== confirmPassword) {
       setFormError("Passwords do not match.");
       return;
     }
 
-    // Clear any previous error messages
     setFormError(null);
 
     try {
@@ -69,15 +66,12 @@ function SignUp() {
         emailAddress,
         password,
       };
-
-      // Trigger the mutation
       mutate(newUser);
     } catch (err) {
       setFormError("Error submitting form. Please try again.");
-      console.error("Error during form submission:", err); // Log the error
+      console.error("Error during form submission:", err);
     }
 
-    // Clear the form after submission
     setFirstName("");
     setMiddleName("");
     setSurName("");

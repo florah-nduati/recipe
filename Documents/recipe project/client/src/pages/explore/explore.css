@@ -1,55 +1,87 @@
-
 .explore-container {
   padding: 20px;
   font-family: "josefin", sans-serif;
-  background-color:var(--color-bac);
+  background-color: var(--color-background);
 }
 
 .explore-container h2 {
   text-align: center;
-  font-size: 4rem;
-  color:var(--color-tersiary);
+  text-transform: capitalize;
+  font-size: 3.5rem;
+  color: var(--color-tersiary);
   margin-bottom: 20px;
 }
 
-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+.explore-container p {
+  text-transform: capitalize;
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 1rem 0;
+  line-height: 1.6;
+  color: var(--color-black);
 }
 
-form input[type="text"] {
-  padding: 10px;
-  width: 250px;
-  border: 1px solid var(--color-secondary);
-  border-radius: 5px;
+.explore-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
+  padding: 0 20px;
+}
+
+
+
+.recipe-preview h3 {
+  font-size: 1.5rem;
+  margin: 10px;
+  text-align: center;
+  color: var(--color-blue);
+}
+
+.recipe-preview p {
   font-size: 1rem;
+  margin: 0 10px;
+  color: var(--color-black);
+  text-align: center;
 }
 
-form button {
-  padding: 15px 15px;
-  width: max-content;
+.recipe-preview-button {
+  display: block;
+  margin: 10px auto;
+  padding: 8px 15px;
+  background-color: var(--color-blue);
+  color: var(--color-white);
   border: none;
   border-radius: 5px;
-  background-color:var(--color-tersiary);
-  color: var(--color-white);
-  font-size: 1rem;
   cursor: pointer;
+  font-size: 1rem;
 }
 
-form button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
+.recipe-preview-button:hover {
+  background-color: var(--color-header);
 }
 
 .filters {
   display: flex;
   justify-content: center;
-  align-items: center;
   gap: 15px;
   margin-bottom: 20px;
+}
+
+.filters form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 250px;
+}
+
+.filters form button {
+  padding: 5px 5px;
+  background-color: var(--color-tersiary);
+  color: var(--color-white);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .filters select {
@@ -59,113 +91,44 @@ form button:disabled {
   font-size: 1rem;
 }
 
-.recipe-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-  padding: 0 20px;
-}
-
-.recipe-card, .recipe-preview {
-  background-color:var(--color-footer);
-  border: 1px solid var(--color-primary);
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
-  transition: transform 0.2s ease;
-}
-
-.recipe-card:hover, .recipe-preview:hover {
-  transform: scale(1.03);
-}
-
-.recipe-card img, .recipe-preview img {
-  width: 100%;
-  height: 250px;
-  padding: 1rem;
-  object-fit: cover;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.recipe-card h3, .recipe-preview h3 {
-  font-size: 1.5rem;
-  text-transform: capitalize;
-  margin: 15px 10px;
-  text-align: center;
-  color:var(--color-blue);
-}
-
-.recipe-card p, .recipe-preview p {
-  font-size: 1rem;
-  margin: 10px;
-  color: var(--color-black);
-}
-
-.recipe-card button, .recipe-preview-button {
-  display: block;
-  margin: 15px auto;
-  padding: 10px 15px;
-  background-color:var(--color-blue);
-  color:var(--color-white);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-}
-
-.recipe-card button:hover , .recipe-preview-button:hover{
-  background-color:var(--color-header);
+.filters select:hover,
+.filters form button:hover {
+  background-color: var(--color-footer);
 }
 
 
-.like-btn,
-.bookmark-btn {
+.like-btn, .bookmark-btn {
   display: inline-flex;
   align-items: center;
-  gap: 2rem;
+  gap: 8px;
   padding: 8px;
   border: none;
   border-radius: 50px;
   background-color: var(--color-primary);
-  color:var(--color-white);
+  color: var(--color-white);
   font-size: 14px;
   cursor: pointer;
-  margin:1rem;
-  margin-bottom: 1rem;
+  margin: 0.5rem;
 }
 
-.like-btn:hover,
-.bookmark-btn:hover {
-  color: #0056b3;
+.like-btn:hover, .bookmark-btn:hover {
+  background-color: var(--color-header);
 }
 
 .bookmark-btn.bookmarked {
-  color: var(--color-white);
   background-color: var(--color-tersiary);
 }
 
-.error {
-  color: red;
+.loading-text, .error-text {
   text-align: center;
   font-size: 16px;
+  color: red;
   margin-top: 20px;
 }
-.error, .loading {
-  text-align: center;
-  font-size: 1.2rem;
-  color:var(--color-tersiary);
-  margin: 20px;
-}
-
 
 @media (max-width: 768px) {
-  .recipe-cards {
+  .explore-content {
     grid-template-columns: 1fr;
-    height: auto;
-  }
-
-  form input[type="text"] {
-    width: 200px;
   }
 
   .filters {
@@ -173,5 +136,3 @@ form button:disabled {
     gap: 10px;
   }
 }
-
-  

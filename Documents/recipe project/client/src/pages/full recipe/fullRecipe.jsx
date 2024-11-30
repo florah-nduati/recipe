@@ -6,20 +6,29 @@ import apiBase from "../../utils/api";
 
 function FullRecipe() {
   const { id } = useParams();
+  console.log("Recipe ID:", id); // Debug the `id`
+
   const { isLoading, isError, error, data } = useQuery({
-    queryKey: ["recipe"],
+    queryKey: ["recipe", id], // Add `id` as part of the query key to track changes
     queryFn: async () => {
+      console.log("Fetching recipe with ID:", id); // Debug the `id`
+
       const response = await fetch(`${apiBase}/recipes/${id}`, {
         credentials: "include",
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
+        if (response.status === 404) {
+          throw new Error("Recipe not found");
+        }
+
+        const error = await response.text(); // Capture error response as text
+        console.error("API Error Response:", error); // Log the error
+        throw new Error(error || "An unknown error occurred");
       }
 
       const data = await response.json();
-      console.log(data);
+      console.log("Fetched Recipe Data:", data);
       return data;
     },
   });
@@ -35,7 +44,9 @@ function FullRecipe() {
   return (
     <div className="recipe">
       <div className="recipe-post">
-        <h1 className="recipe-title">{data && data.title}</h1>
+        <h1 className="recipe-title">
+          {data && data.title ? data.title : "Recipe Not Found"} 
+        </h1>
 
         {data && data.imageUrl && (
           <img

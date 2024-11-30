@@ -8,11 +8,12 @@ import Explore from "./pages/explore/explore";
 import Login from "./pages/login/login";
 import SignUp from "./pages/signup/signup";
 import Footer from "./components/footer/footer";
-import Create from "./pages/create/create";
+//import Create from "./pages/create/create";
 import FullRecipe from "./pages/full recipe/fullRecipe";
 import ExternalFullRecipe from "./pages/fullRecipeExternal/fullRecipeExternal";
 import Recipes from "./pages/my recipes/myRecipes";
-import BookmarksPage from "./pages/bookmark/bookmark";
+import BookmarksPage from "./pages/bookmarksPage/bookmarksPage";
+import Settings from "./pages/settings/settings";
 
 const client = new QueryClient();
 
@@ -41,14 +42,7 @@ function App() {
               </Protected>
             }
           />
-          <Route
-            path="create"
-            element={
-              <Protected>
-                <Create />
-              </Protected>
-            }
-          />
+
           <Route
             path="/full-recipe/:id" 
             element={
@@ -66,10 +60,18 @@ function App() {
             }
           />
           <Route
-            path="/bookmarks" 
+            path="/bookmark" 
             element={
               <Protected>
                 <BookmarksPage />
+              </Protected>
+            }
+          />
+          <Route
+            path="/settings" 
+            element={
+              <Protected>
+                <Settings />
               </Protected>
             }
           />

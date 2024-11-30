@@ -27,8 +27,8 @@ function Header() {
   return (
     <div className="header-navigation">
       <div className="header-logo">
-      <img src={logo} alt="Flavor Logo" className="logo-img" />
-      <h1 className="logo-text">the Flavor lab</h1>
+      
+      <h1 className="logo-text">🌟simply recipes</h1>
       </div>
 
       <nav>
@@ -47,12 +47,7 @@ function Header() {
                   <span className="nav-text">explore</span>
                 </a>
               </li>
-              <li className="navigation-item">
-                <a href="/create" className="navigation-link">
-                  <MdCreateNewFolder className="nav-icon" />
-                  <span className="nav-text">create</span>
-                </a>
-              </li>
+
               <li className="navigation-item">
                 <a href="/recipes" className="navigation-link">
                   <BiSolidBookBookmark className="nav-icon" />
@@ -60,13 +55,7 @@ function Header() {
                 </a>
               </li>
               <li className="navigation-item">
-                <a href="/shopping" className="navigation-link">
-                  <GiShoppingCart className="nav-icon" />
-                  <span className="nav-text">shopping list</span>
-                </a>
-              </li>
-              <li className="navigation-item">
-                <a href="/bookmarks" className="navigation-link">
+                <a href="/bookmark" className="navigation-link">
                   <BiSolidBookBookmark className="nav-icon" />
                   <span className="nav-text">bookmark</span>
                 </a>

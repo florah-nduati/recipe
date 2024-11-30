@@ -4,10 +4,11 @@ import PersonalRecipePreview from '../personalRecipePreview/personalRecipePrevie
 import { Link } from 'react-router-dom';
 import apiBase from '../../utils/api';
 import usePersonalRecipesStore from '../../store/personalRecipeStore';
+import './recipesPreview.css';
 
-function PersonalRecipesPreview() {
+function RecipesPreview() {
     const recipes = usePersonalRecipesStore((state) => state.recipes);
-    const setRecipes = usePersonalRecipesStore((state) => state.setRecipes);
+    const setRecipes = usePersonalRecipesStore(state => state.setRecipes);
 
     const { isLoading, isError, error } = useQuery({
         queryKey: ["personalRecipes"],
@@ -15,28 +16,29 @@ function PersonalRecipesPreview() {
             const response = await fetch(`${apiBase}/recipes/user`, { credentials: "include" });
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || "Failed to fetch recipes");
+                throw new Error(errorData.message);
             }
-            return await response.json();
+            const data = await response.json();
+            return data;
         },
         onSuccess: (data) => {
-            if (Array.isArray(data)) {
-                setRecipes(data);
-            } else {
-                setRecipes([]); // Ensure no crash if response isn't an array
-            }
+            setRecipes(data);   
         }
     });
 
     if (isLoading) {
-        return <h2 className="loading">Loading...</h2>;
+        return (
+            <h2 className="loading">Loading...</h2>
+        );
     }
 
     if (isError) {
-        return <h2 className="error">{error.message}</h2>;
+        return (
+            <h2 className="error">{error.message}</h2>
+        );
     }
 
-    if (!recipes || recipes.length === 0) {
+    if (recipes.length <= 0) {
         return (
             <div className="no-recipes">
                 <h3>You don't have any recipes</h3>
@@ -49,20 +51,19 @@ function PersonalRecipesPreview() {
         <React.Fragment>
             <h2 className="header">Your Personal Recipes</h2>
             <div className="recipes-container">
-                {recipes.map((recipe) => (
-                    <PersonalRecipePreview
-                        key={recipe.id}
-                        id={recipe.id}
-                        title={recipe.title}
+                {recipes.map((recipe, i) => (
+                    <PersonalRecipePreview 
+                        key={i} 
+                        id={recipe.id} 
+                        title={recipe.title} 
                         imageUrl={recipe.imageUrl}
-                        category={recipe.category}
-                        cookingTime={recipe.cookingTime}
+                        description={recipe.description} 
+                        className="recipe-preview" 
                     />
                 ))}
-            </div>
+            </div>    
         </React.Fragment>
     );
 }
 
-export default PersonalRecipesPreview;
-
+export default RecipesPreview;

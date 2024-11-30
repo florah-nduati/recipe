@@ -1,0 +1,130 @@
+/* Overall page styling */
+.bookmarks-page {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: var(--color-background);
+  min-height: 100vh;
+}
+
+.bookmarks-page h2 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Container to hold saved recipes */
+.bookmarks-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-items: center;
+}
+
+/* Message for no saved recipes */
+.bookmarks-content p {
+  font-size: 1.2rem;
+  color: #555;
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Styling individual recipe preview */
+.recipe-preview {
+  background-color: var(--color-footer);
+  border-radius: 10px;
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  max-width: 300px;
+  width: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recipe-preview:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.recipe-preview img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 1px solid var(--color-blue);
+  border-top: 1px solid var(--color-blue);
+}
+
+.recipe-preview-content {
+  padding: 15px;
+}
+
+.recipe-preview-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.recipe-preview-author {
+  font-size: 1rem;
+  color: #666;
+}
+
+.recipe-preview-excerpt {
+  font-size: 0.9rem;
+  color: #777;
+  margin: 5px 0;
+}
+
+.read-more-link {
+  font-size: 1rem;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.read-more-link:hover {
+  text-decoration: underline;
+}
+
+/* Styling for actions like 'Like' and 'Save' */
+.recipe-preview-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.like-btn,
+.save-btn {
+  padding: 8px 15px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.like-btn {
+  background-color:var(--color-secondary);
+}
+
+.like-btn.liked {
+  background-color: #ff6347;
+  color: white;
+}
+
+.save-btn {
+  background-color: var(--color-primary);
+}
+
+.save-btn.saved {
+  background-color: var(--color-tersiary);
+  color: white;
+}
+
+.like-btn:hover,
+.save-btn:hover {
+  background-color: #e0e0e0;
+}
