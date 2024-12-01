@@ -17,7 +17,7 @@ const fetchLikeCount = async (id) => {
 // Fetch Like Status
 const fetchLikeStatus = async (id, userId) => {
   const response = await fetch(
-    `${apiBase}/recipes/${id}/is-liked?userId=${userId}`,
+    `${apiBase}/recipes/${id}/is-liked?userId=${userId}`
   );
   if (!response.ok) {
     throw new Error("Error fetching like status");
@@ -31,7 +31,6 @@ const handleLikeMutation = async (id, isLiked) => {
   const response = await fetch(`${apiBase}/recipes/${id}/like`, {
     method: isLiked ? "DELETE" : "POST",
     headers: { "Content-Type": "application/json" },
-
     credentials: "include",
   });
 
@@ -41,23 +40,21 @@ const handleLikeMutation = async (id, isLiked) => {
 };
 
 // Save Mutation Function
-const handleSaveMutation = async (id, isSaved, isExternal) => {
+const handleSaveMutation = async (id, isSaved, isExternal, recipeDetails) => {
+  const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes")) || [];
   if (isExternal) {
     if (isSaved) {
-      const savedRecipes =
-        JSON.parse(localStorage.getItem("savedRecipes")) || [];
       const updatedRecipes = savedRecipes.filter((recipe) => recipe.id !== id);
       localStorage.setItem("savedRecipes", JSON.stringify(updatedRecipes));
     } else {
-      const savedRecipes =
-        JSON.parse(localStorage.getItem("savedRecipes")) || [];
       const recipeToSave = {
         id,
         isExternal,
+        ...recipeDetails, // Save full recipe details including imageUrl
       };
       localStorage.setItem(
         "savedRecipes",
-        JSON.stringify([...savedRecipes, recipeToSave]),
+        JSON.stringify([...savedRecipes, recipeToSave])
       );
     }
   } else {
@@ -95,16 +92,14 @@ function RecipePreview({
     queryFn: () => fetchLikeCount(id),
   });
 
-  const userId = localStorage.getItem("userId"); // Retrieve userId stored in localStorage
+  const userId = localStorage.getItem("userId");
 
-  // Fetch like status using React Query
   const { data: likeStatus, error: likeStatusError } = useQuery({
     queryKey: ["likeStatus", id, userId],
     queryFn: () => fetchLikeStatus(id, userId),
     enabled: !!userId,
   });
 
-  // Like Mutation using useMutation
   const { mutate: handleLike } = useMutation({
     mutationFn: (isLiked) => handleLikeMutation(id, isLiked, userId),
     onSuccess: () => {
@@ -117,7 +112,15 @@ function RecipePreview({
   });
 
   const { mutate: handleSave } = useMutation({
-    mutationFn: (isSaved) => handleSaveMutation(id, isSaved, isExternal),
+    mutationFn: (isSaved) =>
+      handleSaveMutation(id, isSaved, isExternal, {
+        title,
+        authorName,
+        imageUrl,
+        category,
+        cookingTime,
+        cuisine,
+      }),
     onSuccess: () => {
       setIsSaved((prev) => !prev);
       if (onSave) onSave(id);
@@ -131,14 +134,8 @@ function RecipePreview({
     }
   }, [likeStatus]);
 
-  useEffect(() => {
-    if (likeCount !== undefined) {
-    }
-  }, [likeCount]);
-
   if (likeCountLoading) return <p>Loading like count...</p>;
   if (likeCountError) return <p>Error loading like count</p>;
-
   if (likeStatusError) return <p>Error loading like status</p>;
 
   return (
@@ -146,52 +143,72 @@ function RecipePreview({
       {imageUrl && (
         <img src={imageUrl} alt={title} className="recipe-preview-image" />
       )}
-      <div className="recipe-preview-content">
-        <h3 className="recipe-preview-title">{title}</h3>
-        <p className="recipe-preview-author">By {authorName}</p>
-        <p className="blog-preview-excerpt">Category: {category}</p>
-        <p className="blog-preview-excerpt">⏲️: {cookingTime}</p>
-        <p className="blog-preview-excerpt">Cuisine: {cuisine}</p>
-        <p className="likes-count">❤️ {likeCount} Likes</p>
+  
+      {isBookmarkPage ? (
+        <div className="recipe-preview-content">
 
-        <Link
-          to={isExternal ? `/full-recipe/${id}` : `/recipe/${id}`}
-          className="read-more-link"
-        >
-          Read More
-        </Link>
-
-        <div className="recipe-preview-actions">
-          <button
-            onClick={() => handleLike(isLiked)}
-            className={`like-btn ${isLiked ? "liked" : ""}`}
+          <h3 className="recipe-preview-title">{title}</h3>
+          <p className="blog-preview-excerpt">Category: {category}</p>
+          <p className="blog-preview-excerpt">Cuisine: {cuisine}</p>
+          <div className="rating">
+            {Array(5)
+              .fill(null)
+              .map((_, index) => (
+                <span key={index} style={{ color: "red", fontSize: "1.5rem" }}>
+                  ★
+                </span>
+              ))}
+          </div>
+          <Link
+            to={isExternal ? `/full-recipe/${id}` : `/recipe/${id}`}
+            className="read-more-link"
           >
-            {isLiked ? "Liked" : "Like"}
+            Read More
+          </Link>
+          <button
+            onClick={() => handleSave(isSaved)}
+            className={`save-btn ${isSaved ? "saved" : ""}`}
+          >
+            Unsave
           </button>
-
-          {/* Render Save button in Explore page */}
-          {!isBookmarkPage && (
+        </div>
+      ) : (
+        <div className="recipe-preview-content">
+          <h3 className="recipe-preview-title">{title}</h3>
+          <p className="recipe-preview-author">By {authorName}</p>
+          <p className="blog-preview-excerpt">Category: {category}</p>
+          <p className="blog-preview-excerpt">⏲️: {cookingTime}</p>
+          <p className="blog-preview-excerpt">Cuisine: {cuisine}</p>
+          <p className="likes-count">❤️ {likeCount} Likes</p>
+  
+          <Link
+            to={isExternal ? `/full-recipe/${id}` : `/recipe/${id}`}
+            className="read-more-link"
+          >
+            Read More
+          </Link>
+  
+          <div className="recipe-preview-actions">
+            <button
+              onClick={() => handleLike(isLiked)}
+              className={`like-btn ${isLiked ? "liked" : ""}`}
+            >
+              {isLiked ? "Liked" : "Like"}
+            </button>
             <button
               onClick={() => handleSave(isSaved)}
               className={`save-btn ${isSaved ? "saved" : ""}`}
             >
               {isSaved ? "Unsave" : "Save"}
             </button>
-          )}
-
-          {/* Render Unsave button in Bookmarks page */}
-          {isBookmarkPage && (
-            <button
-              onClick={() => handleSave(isSaved)}
-              className={`save-btn ${isSaved ? "saved" : ""}`}
-            >
-              Unsave
-            </button>
-          )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
+  
+  
+
 }
 
 export default RecipePreview;

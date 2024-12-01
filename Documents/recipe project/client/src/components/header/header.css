@@ -6,13 +6,37 @@
   background-color: var(--color-primary);
   color: var(--color-white);
   padding: 1rem 2rem; /* Add padding to make the header less cramped */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.3s ease;
+  background: linear-gradient(45deg, var(--color-primary), var(--color-secondary)); /* Animated gradient */
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s ease infinite; /* Add animated gradient */
 }
 
+/* Keyframe for background gradient animation */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Logo image styling (if using image) */
 .logo-img {
   padding: 0;
   margin: 0 2rem;
   height: 100px; /* Adjust the size of the logo */
   width: 150px;
+  border-radius: 10px; /* Add rounded corners to the logo */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Logo shadow */
 }
 
 /* Logo text styling */
@@ -21,6 +45,10 @@
   font-size: 3rem;
   text-transform: capitalize;
   margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  letter-spacing: 1px; /* Add spacing between letters */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow to text */
 }
 
 /* Styling for the navigation list */
@@ -32,6 +60,24 @@
   gap: 3rem;
   text-transform: capitalize;
   align-items: center; /* Center items vertically */
+  position: relative;
+}
+
+/* Decorative underline for navigation list */
+.navigation-list::after {
+  content: '';
+  position: absolute;
+  width: 80%;
+  height: 2px;
+  background-color: var(--color-white);
+  bottom: 0;
+  left: 10%;
+  transition: width 0.3s ease;
+}
+
+/* Hover effect on navigation list */
+.navigation-list:hover::after {
+  width: 100%; /* Expand the underline on hover */
 }
 
 /* Styling for each navigation link */
@@ -44,10 +90,10 @@
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-  transition:
-    color 0.3s,
-    background-color 0.3s;
   border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s, background-color 0.3s;
 }
 
 /* Hover effect for navigation links */
@@ -56,34 +102,147 @@
   background-color: var(--color-white);
 }
 
+/* Add an animated border effect on hover for navigation links */
+.navigation-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid var(--color-primary);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.navigation-link:hover::before {
+  opacity: 1;
+}
+
 /* Icon styling */
 .nav-icon {
   font-size: 2.5rem;
   color: var(--color-tersiary);
+  transition: transform 0.3s ease-in-out, color 0.3s ease; /* Add transition for smooth icon animations */
+}
+
+/* Add icon rotation and color change effect on hover */
+.navigation-link:hover .nav-icon {
+  transform: rotate(360deg); /* Rotate icon */
+  color: var(--color-primary); /* Change icon color */
 }
 
 /* Text under each icon */
 .nav-text {
   margin-top: 0.5rem;
   font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
-/* Media query for responsiveness (screen width <= 900px) */
-@media screen and (max-width: 56.25em) {
-  /* Stack the navigation links vertically on smaller screens */
+/* Add subtle animation for nav-text */
+.navigation-link:hover .nav-text {
+  color: var(--color-primary);
+}
+
+/* Dropdown menu for user profile or settings */
+.navigation-item .dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: var(--color-primary);
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content a {
+  color: var(--color-white);
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Hover effect for dropdown items */
+.dropdown-content a:hover {
+  background-color: var(--color-secondary);
+}
+
+/* Animated Search Bar */
+.search-bar {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid var(--color-tersiary);
+  transition: all 0.3s ease-in-out;
+}
+
+.search-icon:hover + .search-bar {
+  display: block; /* Display the search bar when the search icon is hovered */
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Hamburger menu for smaller screens */
+.hamburger-menu {
+  display: none;
+}
+
+.hamburger-menu-icon {
+  font-size: 2.5rem;
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+  .header-navigation {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
   .navigation-list {
     flex-direction: column;
-    align-items: center; /* Center the items */
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
-  /* Center the logo in small screens */
   .logo-text {
-    font-size: 2.5rem;
+    font-size: 2rem;
+    letter-spacing: 0;
   }
 
-  .navigation-item {
-    width: 100%; /* Allow each navigation item to take full width */
-    text-align: center; /* Center text inside the items */
+  .hamburger-menu {
+    display: block;
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+  }
+
+  .hamburger-menu.open .navigation-list {
+    display: block;
+  }
+
+  .navigation-list {
+    display: none;
+    gap: 1rem;
+    text-align: center;
   }
 }
+

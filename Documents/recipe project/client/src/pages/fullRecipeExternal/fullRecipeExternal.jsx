@@ -11,10 +11,7 @@ function ExternalFullRecipe() {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        // Log the ID being used to fetch the recipe for debugging
         console.log("Fetching recipe with ID:", id);
-
-        // Ensure the id exists before making the request
         if (!id) {
           throw new Error("No recipe ID found in URL");
         }
@@ -25,24 +22,21 @@ function ExternalFullRecipe() {
         );
 
         if (!response.ok) {
-          // If the response is not OK, throw an error
           throw new Error(
             `Failed to fetch recipe details. Status: ${response.status}`,
           );
         }
 
         const data = await response.json();
-
-        // Debugging the API response
         console.log("API Response:", data);
 
         if (data.meals && data.meals.length > 0) {
-          setRecipe(data.meals[0]); // Set the recipe if available
+          setRecipe(data.meals[0]);
         } else {
           throw new Error("Recipe not found with the provided ID");
         }
       } catch (err) {
-        console.error("Error:", err.message); // Log the error
+        console.error("Error:", err.message); 
         setError(`Error fetching recipe details: ${err.message}`);
       } finally {
         setLoading(false);
@@ -50,19 +44,14 @@ function ExternalFullRecipe() {
     };
 
     fetchRecipe();
-  }, [id]); // Re-fetch when the `id` changes
+  }, [id]); 
 
-  // Loading state
   if (loading) {
     return <p className="error">Loading recipe details...</p>;
   }
-
-  // Error state
   if (error) {
     return <p className="error">{error}</p>;
   }
-
-  // If no recipe is found
   if (!recipe) {
     return (
       <div className="recipe">

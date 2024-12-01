@@ -6,12 +6,12 @@ import apiBase from "../../utils/api";
 
 function FullRecipe() {
   const { id } = useParams();
-  console.log("Recipe ID:", id); // Debug the `id`
+  console.log("Recipe ID:", id); 
 
   const { isLoading, isError, error, data } = useQuery({
-    queryKey: ["recipe", id], // Add `id` as part of the query key to track changes
+    queryKey: ["recipe", id], 
     queryFn: async () => {
-      console.log("Fetching recipe with ID:", id); // Debug the `id`
+      console.log("Fetching recipe with ID:", id); 
 
       const response = await fetch(`${apiBase}/recipes/${id}`, {
         credentials: "include",
@@ -22,8 +22,8 @@ function FullRecipe() {
           throw new Error("Recipe not found");
         }
 
-        const error = await response.text(); // Capture error response as text
-        console.error("API Error Response:", error); // Log the error
+        const error = await response.text(); 
+        console.error("API Error Response:", error);
         throw new Error(error || "An unknown error occurred");
       }
 

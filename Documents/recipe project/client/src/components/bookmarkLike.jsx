@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useMutation } from "react-query";
 import apiBase from "../utils/api";
 
-// Backend API functions for liking/unliking recipes
 const likeRecipe = async (recipeId) => {
   const response = await fetch(`${apiBase}/recipes/${recipeId}/like`, {
     method: "POST",
@@ -21,7 +20,6 @@ const unlikeRecipe = async (recipeId) => {
   return response.json();
 };
 
-// Backend API functions for bookmarking/unbookmarking recipes
 const addBookmark = async (recipeId) => {
   const response = await fetch(`${apiBase}/recipes/${recipeId}/addBookmark`, {
     method: "POST",
@@ -47,7 +45,7 @@ function LikesAndBookmarks() {
   const [likedRecipes, setLikedRecipes] = useState(new Set());
   const [bookmarkedRecipes, setBookmarkedRecipes] = useState(new Set());
   const [likesCount, setLikesCount] = useState({});
-  const [bookmarkedList, setBookmarkedList] = useState([]); // Stores detailed bookmarked recipes
+  const [bookmarkedList, setBookmarkedList] = useState([]);
 
   useEffect(() => {
     const persistedLikedRecipes = localStorage.getItem("likedRecipes");
@@ -124,7 +122,7 @@ function LikesAndBookmarks() {
       const updated = new Set(bookmarkedRecipes);
       updated.delete(recipeId);
       setBookmarkedRecipes(updated);
-      removeRecipeFromList(recipeId); // Remove recipe from visible list
+      removeRecipeFromList(recipeId); 
       localStorage.setItem(
         "bookmarkedRecipes",
         JSON.stringify(

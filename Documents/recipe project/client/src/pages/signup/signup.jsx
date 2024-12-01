@@ -29,13 +29,11 @@ function SignUp() {
           console.error("API error response:", error);
           throw new Error(error.message || "Error occurred during sign up.");
         }
-
-        // Parse and return the response data
         const data = await response.json();
         return data;
       } catch (error) {
-        console.error("Error during mutation:", error); // Log the error for debugging
-        throw error; // Rethrow the error to be caught in onError
+        console.error("Error during mutation:", error); 
+        throw error; 
       }
     },
     onSuccess: () => {

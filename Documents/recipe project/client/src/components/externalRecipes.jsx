@@ -5,7 +5,6 @@ function useFetchMealDB() {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState({ category: "", area: "" });
 
-  // Construct the API URL dynamically based on search and filter
   const getApiUrl = () => {
     if (searchTerm) {
       return `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm}`;
@@ -27,7 +26,7 @@ function useFetchMealDB() {
         throw new Error("Failed to fetch recipes from TheMealDB");
       }
       const data = await response.json();
-      return data.meals; // Returns an array of meals
+      return data.meals; 
     },
   });
 
