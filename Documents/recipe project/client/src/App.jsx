@@ -8,7 +8,7 @@ import Explore from "./pages/explore/explore";
 import Login from "./pages/login/login";
 import SignUp from "./pages/signup/signup";
 import Footer from "./components/footer/footer";
-//import Create from "./pages/create/create";
+import Edit from "./pages/edit/edit";
 import FullRecipe from "./pages/full recipe/fullRecipe";
 import ExternalFullRecipe from "./pages/fullRecipeExternal/fullRecipeExternal";
 import Recipes from "./pages/my recipes/myRecipes";
@@ -44,7 +44,7 @@ function App() {
           />
 
           <Route
-            path="/full-recipe/:id" 
+            path="/full-recipe/:id"
             element={
               <Protected>
                 <ExternalFullRecipe />
@@ -52,7 +52,7 @@ function App() {
             }
           />
           <Route
-            path="/recipes" 
+            path="/recipes"
             element={
               <Protected>
                 <Recipes />
@@ -60,7 +60,15 @@ function App() {
             }
           />
           <Route
-            path="/bookmark" 
+            path="/edit/:recipeId"
+            element={
+              <Protected>
+                <Edit />
+              </Protected>
+            }
+          />
+          <Route
+            path="/bookmark"
             element={
               <Protected>
                 <BookmarksPage />
@@ -68,7 +76,7 @@ function App() {
             }
           />
           <Route
-            path="/settings" 
+            path="/settings"
             element={
               <Protected>
                 <Settings />

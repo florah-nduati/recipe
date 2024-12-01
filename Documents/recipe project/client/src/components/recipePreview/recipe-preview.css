@@ -4,7 +4,9 @@
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
 }
 
 .recipe-preview:hover {
@@ -39,7 +41,7 @@
 }
 
 .recipe-preview-button:hover {
-  background-color:var(--color-header);
+  background-color: var(--color-header);
 }
 
 .read-more-link {
@@ -54,7 +56,7 @@
   cursor: pointer;
   font-size: 1rem;
 }
-.read-more-link:hover{
+.read-more-link:hover {
   background-color: var(--color-header);
   text-decoration: none;
 }

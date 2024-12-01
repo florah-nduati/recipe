@@ -10,9 +10,8 @@ import { RiLogoutBoxFill } from "react-icons/ri";
 import { RiLoginBoxFill } from "react-icons/ri";
 import { FaRupeeSign } from "react-icons/fa";
 import "./header.css";
-import logo from '../../assets/flavor logo.jpeg';
+import logo from "../../assets/flavor logo.jpeg";
 import useUserStore from "../../store/userStore";
-
 
 function Header() {
   const navigate = useNavigate();
@@ -27,8 +26,7 @@ function Header() {
   return (
     <div className="header-navigation">
       <div className="header-logo">
-      
-      <h1 className="logo-text">🌟simply recipes</h1>
+        <h1 className="logo-text">🌟simply recipes</h1>
       </div>
 
       <nav>
@@ -88,7 +86,7 @@ function Header() {
               </li>
               <li className="navigation-item">
                 <a href="/sign-up" className="navigation-link">
-                  < FaRupeeSign className="nav-icon" />
+                  <FaRupeeSign className="nav-icon" />
                   <span className="nav-text">sign up</span>
                 </a>
               </li>
@@ -101,4 +99,3 @@ function Header() {
 }
 
 export default Header;
-

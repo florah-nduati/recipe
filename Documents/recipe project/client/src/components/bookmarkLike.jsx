@@ -32,10 +32,13 @@ const addBookmark = async (recipeId) => {
 };
 
 const removeBookmark = async (recipeId) => {
-  const response = await fetch(`${apiBase}/recipes/${recipeId}/removeBookmark`, {
-    method: "DELETE",
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${apiBase}/recipes/${recipeId}/removeBookmark`,
+    {
+      method: "DELETE",
+      credentials: "include",
+    },
+  );
   if (!response.ok) throw new Error("Failed to remove bookmark");
   return response.json();
 };
@@ -49,7 +52,8 @@ function LikesAndBookmarks() {
   useEffect(() => {
     const persistedLikedRecipes = localStorage.getItem("likedRecipes");
     const persistedLikesCount = localStorage.getItem("likesCount");
-    const persistedBookmarkedRecipes = localStorage.getItem("bookmarkedRecipes");
+    const persistedBookmarkedRecipes =
+      localStorage.getItem("bookmarkedRecipes");
 
     if (persistedLikedRecipes) {
       setLikedRecipes(new Set(JSON.parse(persistedLikedRecipes)));
@@ -65,7 +69,9 @@ function LikesAndBookmarks() {
   }, []);
 
   const removeRecipeFromList = (recipeId) => {
-    setBookmarkedList((prev) => prev.filter((recipe) => recipe.id !== recipeId));
+    setBookmarkedList((prev) =>
+      prev.filter((recipe) => recipe.id !== recipeId),
+    );
   };
 
   const likeMutation = useMutation(likeRecipe, {
@@ -103,7 +109,10 @@ function LikesAndBookmarks() {
   const bookmarkMutation = useMutation(addBookmark, {
     onSuccess: (data, recipeId) => {
       setBookmarkedRecipes((prev) => new Set(prev.add(recipeId)));
-      localStorage.setItem("bookmarkedRecipes", JSON.stringify([...bookmarkedRecipes]));
+      localStorage.setItem(
+        "bookmarkedRecipes",
+        JSON.stringify([...bookmarkedRecipes]),
+      );
     },
     onError: (error) => {
       console.error("Error bookmarking recipe:", error.message);
@@ -118,7 +127,9 @@ function LikesAndBookmarks() {
       removeRecipeFromList(recipeId); // Remove recipe from visible list
       localStorage.setItem(
         "bookmarkedRecipes",
-        JSON.stringify(bookmarkedList.filter((recipe) => recipe.id !== recipeId))
+        JSON.stringify(
+          bookmarkedList.filter((recipe) => recipe.id !== recipeId),
+        ),
       );
     },
     onError: (error) => {

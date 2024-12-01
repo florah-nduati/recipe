@@ -1,6 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
 .explore-container {
   padding: 20px;
-  font-family: "josefin", sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   background-color: var(--color-background);
 }
 
@@ -14,11 +15,12 @@
 
 .explore-container p {
   text-transform: capitalize;
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   text-align: center;
+  margin: 2rem;
   margin: 1rem 0;
   line-height: 1.6;
-  color: var(--color-black);
+  color: var(--color-blue);
 }
 
 .explore-content {
@@ -27,8 +29,6 @@
   gap: 30px;
   padding: 0 20px;
 }
-
-
 
 .recipe-preview h3 {
   font-size: 1.5rem;
@@ -60,31 +60,7 @@
   background-color: var(--color-header);
 }
 
-.filters {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.filters form input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-  width: 250px;
-}
-
-.filters form button {
-  padding: 5px 5px;
-  background-color: var(--color-tersiary);
-  color: var(--color-white);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.filters select {
+.filter {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -96,8 +72,8 @@
   background-color: var(--color-footer);
 }
 
-
-.like-btn, .bookmark-btn {
+.like-btn,
+.bookmark-btn {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -111,7 +87,8 @@
   margin: 0.5rem;
 }
 
-.like-btn:hover, .bookmark-btn:hover {
+.like-btn:hover,
+.bookmark-btn:hover {
   background-color: var(--color-header);
 }
 
@@ -119,7 +96,8 @@
   background-color: var(--color-tersiary);
 }
 
-.loading-text, .error-text {
+.loading-text,
+.error-text {
   text-align: center;
   font-size: 16px;
   color: red;

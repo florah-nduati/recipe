@@ -1,16 +1,16 @@
 import { create } from "zustand";
 
 function personalRecipesStore(set) {
-    return{
-        recipes: [],
+  return {
+    recipes: [],
 
-        setRecipes: (recipes) => {
-            set((state) =>{
-                return { recipes: recipes};
-            });
-        },
-    };
+    setRecipes: (recipes) => {
+      set((state) => {
+        return { recipes: recipes };
+      });
+    },
+  };
 }
 
-const usePersonalRecipesStore = create (personalRecipesStore);
+const usePersonalRecipesStore = create(personalRecipesStore);
 export default usePersonalRecipesStore;

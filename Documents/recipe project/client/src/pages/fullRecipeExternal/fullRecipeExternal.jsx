@@ -13,7 +13,7 @@ function ExternalFullRecipe() {
       try {
         // Log the ID being used to fetch the recipe for debugging
         console.log("Fetching recipe with ID:", id);
-        
+
         // Ensure the id exists before making the request
         if (!id) {
           throw new Error("No recipe ID found in URL");
@@ -21,16 +21,18 @@ function ExternalFullRecipe() {
 
         setLoading(true);
         const response = await fetch(
-          `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+          `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`,
         );
-        
+
         if (!response.ok) {
           // If the response is not OK, throw an error
-          throw new Error(`Failed to fetch recipe details. Status: ${response.status}`);
+          throw new Error(
+            `Failed to fetch recipe details. Status: ${response.status}`,
+          );
         }
 
         const data = await response.json();
-        
+
         // Debugging the API response
         console.log("API Response:", data);
 

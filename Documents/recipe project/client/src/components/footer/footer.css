@@ -4,13 +4,14 @@
   padding: 10px;
   text-align: center;
   font-size: 1.7rem;
-
-  p {
-    text-transform: capitalize;
-    line-height: 2rem;
-    font-size: 2rem;
-  }
 }
+
+.footer p {
+  text-transform: capitalize;
+  line-height: 2rem;
+  font-size: 2rem;
+}
+
 .footer-logo-img {
   width: 100px;
   height: auto;
@@ -19,24 +20,30 @@
 
 .footer-info p {
   margin: 5px 0;
-  font-size: 1rem;
+  font-size: 1.8rem;
+  color: var(--color-background);
+  line-height: 4rem;
 }
 
 .footer-links {
   margin-top: 15px;
+  color: var(--color-secondary);
 }
 
 .footer-link {
-  color:var(--color-black);
-  font-size: 1.2rem;
+  color: var(--color-tersiary);
+  font-size: 2rem;
   margin: 0 10px;
   display: inline-flex;
+  padding: 1rem;
+  border-radius: 50px;
   align-items: center;
   text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
 }
 
 .footer-link:hover {
-  color: #f0a500;
+  color: var(--color-footer);
 }
 
 .footer-link svg {

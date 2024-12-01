@@ -45,7 +45,7 @@ function FullRecipe() {
     <div className="recipe">
       <div className="recipe-post">
         <h1 className="recipe-title">
-          {data && data.title ? data.title : "Recipe Not Found"} 
+          {data && data.title ? data.title : "Recipe Not Found"}
         </h1>
 
         {data && data.imageUrl && (

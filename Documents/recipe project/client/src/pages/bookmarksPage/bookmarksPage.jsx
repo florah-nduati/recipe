@@ -7,7 +7,8 @@ function BookmarksPage() {
 
   useEffect(() => {
     // For external recipes, get saved data from localStorage
-    const storedRecipes = JSON.parse(localStorage.getItem("savedRecipes")) || [];
+    const storedRecipes =
+      JSON.parse(localStorage.getItem("savedRecipes")) || [];
     setSavedRecipes(storedRecipes);
   }, []);
 
@@ -21,12 +22,18 @@ function BookmarksPage() {
               key={i}
               title={recipe.title}
               authorName={recipe.authorName}
-              imageUrl={recipe.imageUrl}  // Ensure imageUrl is passed here
+              imageUrl={recipe.imageUrl}
               category={recipe.category}
               cookingTime={recipe.cookingTime}
               cuisine={recipe.cuisine}
               id={recipe.id}
               isExternal={recipe.isExternal}
+              isBookmarkPage={true} // Passing the prop to indicate Bookmarks page
+              onRemove={(id) => {
+                setSavedRecipes((prev) =>
+                  prev.filter((recipe) => recipe.id !== id),
+                ); // Remove recipe from state
+              }}
             />
           ))
         ) : (

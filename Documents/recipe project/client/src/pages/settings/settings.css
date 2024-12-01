@@ -1,10 +1,10 @@
-.settings{
-background:url(../../assets/signup.jpg);
-background-size: cover;
-background-position: center;
-height: auto;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
+.settings {
+  background: url(../../assets/signup.jpg);
+  background-size: cover;
+  background-position: center;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

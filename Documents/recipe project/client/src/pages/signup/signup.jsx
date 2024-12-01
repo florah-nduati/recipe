@@ -26,7 +26,7 @@ function SignUp() {
 
         if (!response.ok) {
           const error = await response.json();
-          console.error("API error response:", error); 
+          console.error("API error response:", error);
           throw new Error(error.message || "Error occurred during sign up.");
         }
 

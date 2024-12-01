@@ -7,7 +7,7 @@
   justify-content: center;
   gap: 5rem;
   align-items: center;
-  padding: 0 1rem; 
+  padding: 0 1rem;
 }
 
 h1 {
@@ -15,7 +15,7 @@ h1 {
   font-weight: 800;
   color: var(--color-blue);
   text-align: center;
-  margin: 0; 
+  margin: 0;
 }
 
 p {
@@ -40,7 +40,6 @@ p {
   align-items: center;
 }
 
-
 .cta {
   text-transform: capitalize;
   text-decoration: none;
@@ -54,58 +53,54 @@ p {
   font-size: 2rem;
 }
 
-
-
-
 @media (max-width: 768px) {
   h1 {
-    font-size: 4rem; 
+    font-size: 4rem;
   }
 
   p {
-    font-size: 2.5rem; 
-    margin: 1.5rem; 
+    font-size: 2.5rem;
+    margin: 1.5rem;
   }
 
   .cta-button {
-    padding: 1.5rem; 
-    font-size: 1.8rem; 
+    padding: 1.5rem;
+    font-size: 1.8rem;
   }
 
   .cta {
-    font-size: 1.8rem; 
+    font-size: 1.8rem;
   }
 
   .button {
-    font-size: 1.8rem; 
+    font-size: 1.8rem;
   }
 }
 
-
 @media (max-width: 480px) {
   .hero-section {
-    height: 75vh; 
+    height: 75vh;
   }
 
   h1 {
-    font-size: 3rem; 
+    font-size: 3rem;
   }
 
   p {
-    font-size: 2rem; 
-    margin: 1rem; 
+    font-size: 2rem;
+    margin: 1rem;
   }
 
   .cta-button {
-    padding: 1.2rem; 
-    font-size: 1.6rem; 
+    padding: 1.2rem;
+    font-size: 1.6rem;
   }
 
   .cta {
-    font-size: 1.6rem; 
+    font-size: 1.6rem;
   }
 
   .button {
-    font-size: 1.6rem; 
+    font-size: 1.6rem;
   }
 }

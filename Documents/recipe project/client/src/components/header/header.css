@@ -1,33 +1,40 @@
+/* General styles for header navigation */
 .header-navigation {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Centering the content vertically */
   background-color: var(--color-primary);
   color: var(--color-white);
- 
+  padding: 1rem 2rem; /* Add padding to make the header less cramped */
 }
+
 .logo-img {
   padding: 0;
   margin: 0 2rem;
-  height: 100px; /* Adjust the size as needed */
+  height: 100px; /* Adjust the size of the logo */
   width: 150px;
 }
 
+/* Logo text styling */
 .logo-text {
   color: var(--color-footer);
-  margin: 2rem;
   font-size: 3rem;
   text-transform: capitalize;
+  margin: 0;
 }
 
+/* Styling for the navigation list */
 .navigation-list {
-  padding: 2rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 3rem;
   list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 3rem;
   text-transform: capitalize;
+  align-items: center; /* Center items vertically */
 }
 
+/* Styling for each navigation link */
 .navigation-link {
   text-decoration: none;
   color: var(--color-white);
@@ -37,32 +44,46 @@
   flex-direction: column;
   align-items: center;
   padding: 1rem;
-  transition: color 0.3s;
-}
-
-.navigation-link:hover {
-  color: var(--color-primary);
-  background-color: var(--color-white);
+  transition:
+    color 0.3s,
+    background-color 0.3s;
   border-radius: 3px;
 }
 
+/* Hover effect for navigation links */
+.navigation-link:hover {
+  color: var(--color-primary);
+  background-color: var(--color-white);
+}
+
+/* Icon styling */
 .nav-icon {
   font-size: 2.5rem;
   color: var(--color-tersiary);
 }
 
+/* Text under each icon */
 .nav-text {
-  margin-top: 0.5rem; 
+  margin-top: 0.5rem;
   font-size: 1rem;
 }
 
+/* Media query for responsiveness (screen width <= 900px) */
 @media screen and (max-width: 56.25em) {
+  /* Stack the navigation links vertically on smaller screens */
   .navigation-list {
-    gap: 1rem;
-    display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    align-items: center; /* Center the items */
+    gap: 1rem;
   }
-  
-}
 
+  /* Center the logo in small screens */
+  .logo-text {
+    font-size: 2.5rem;
+  }
+
+  .navigation-item {
+    width: 100%; /* Allow each navigation item to take full width */
+    text-align: center; /* Center text inside the items */
+  }
+}

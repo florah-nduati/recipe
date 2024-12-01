@@ -6,18 +6,23 @@ import fetchMealDBRecipes from "../../hooks/useFetchMealDB";
 import apiBase from "../../utils/api";
 
 function Explore() {
-  // Manage search and filter states
   const [searchQuery, setSearchQuery] = useState("");
   const [filterCriteria, setFilterCriteria] = useState({
     category: "",
     area: "",
   });
 
-  // Fetch backend recipes
-  const { isLoading: isLoadingBackend, isError: isErrorBackend, error: backendError, data: backendRecipes } = useQuery({
+  const {
+    isLoading: isLoadingBackend,
+    isError: isErrorBackend,
+    error: backendError,
+    data: backendRecipes,
+  } = useQuery({
     queryKey: ["allRecipes", searchQuery, filterCriteria],
     queryFn: async () => {
-      const response = await fetch(`${apiBase}/recipes`, { credentials: "include" });
+      const response = await fetch(`${apiBase}/recipes`, {
+        credentials: "include",
+      });
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message);
@@ -26,26 +31,29 @@ function Explore() {
     },
   });
 
-  // Fetch external recipes using the custom hook with search and filter params
-  const { data: externalRecipes, isLoading: isLoadingExternal, isError: isErrorExternal, error: externalError } = fetchMealDBRecipes(searchQuery, filterCriteria);
+  const {
+    data: externalRecipes,
+    isLoading: isLoadingExternal,
+    isError: isErrorExternal,
+    error: externalError,
+  } = fetchMealDBRecipes(searchQuery, filterCriteria);
 
-  // Like and Save handlers for backend recipes
+  // Like and Save handlers
   const handleLikeBackend = async (id) => {
-    // Call backend API to like a recipe
-    await fetch(`${apiBase}/recipes/${id}/like`, { method: "POST" });
+    await fetch(`${apiBase}/recipes/${id}/like`,
+       { method: "POST" });
   };
 
   const handleSaveBackend = async (id) => {
-    // Call backend API to save a recipe
-    await fetch(`${apiBase}/recipes/${id}/save`, { method: "POST" });
+    await fetch(`${apiBase}/recipes/${id}/save`,
+       { method: "POST" });
   };
 
-  // Handle search input change
+  // Search and filter handlers
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
-  // Handle filter change
   const handleFilterChange = (event) => {
     setFilterCriteria((prevState) => ({
       ...prevState,
@@ -53,20 +61,32 @@ function Explore() {
     }));
   };
 
-  // Check if loading or errors exist
+  // Loading or error handling
   if (isLoadingBackend || isLoadingExternal) {
     return <h2 className="loading-text">Loading...</h2>;
   }
+
   if (isErrorBackend || isErrorExternal) {
-    return <div className="error-text">{backendError?.message || externalError?.message}</div>;
+    return (
+      <div className="error-text">
+        {backendError?.message || externalError?.message}
+      </div>
+    );
   }
 
   return (
     <div className="explore">
       <div className="explore-container">
         <h2>Explore Recipes</h2>
+        <p>
+          Discover a world of flavors with our Recipe Explore page! From
+          mouthwatering classics to creative culinary twists, dive into a
+          collection of recipes crafted by passionate food lovers just like you.
+          Whether you are seeking inspiration or sharing your own creations,
+          this is your go-to hub for all things delicious!
+        </p>
 
-        {/* Search and Filter Section */}
+        {/* Search and filter inputs */}
         <div className="search-filter">
           <input
             type="text"
@@ -74,24 +94,33 @@ function Explore() {
             value={searchQuery}
             onChange={handleSearchChange}
           />
-          <select name="category" onChange={handleFilterChange} value={filterCriteria.category}>
+          <select
+            name="category"
+            onChange={handleFilterChange}
+            value={filterCriteria.category}
+            className="filter"
+          >
             <option value="">Select Category</option>
             <option value="Dessert">Dessert</option>
             <option value="Main Course">Main Course</option>
             <option value="Appetizer">Appetizer</option>
-            {/* Add more categories here */}
           </select>
-          <select name="area" onChange={handleFilterChange} value={filterCriteria.area}>
+          <select
+            name="area"
+            onChange={handleFilterChange}
+            value={filterCriteria.area}
+            className="category"
+          >
             <option value="">Select Area</option>
             <option value="American">American</option>
             <option value="Italian">Italian</option>
             <option value="Chinese">Chinese</option>
-            {/* Add more areas here */}
           </select>
         </div>
 
+        {/* Display fetched recipes */}
         <div className="explore-content">
-          {/* Backend Recipes */}
+          {/* Render Backend Recipes */}
           {backendRecipes &&
             backendRecipes.map((recipe, i) => (
               <RecipePreview
@@ -103,13 +132,13 @@ function Explore() {
                 cookingTime={recipe.cookingTime}
                 cuisine={recipe.cuisine}
                 id={recipe.id}
-                isExternal={false} // Backend recipe
+                isExternal={false}
                 onLike={handleLikeBackend}
                 onSave={handleSaveBackend}
               />
             ))}
 
-          {/* External Recipes */}
+          {/* Render External Recipes */}
           {externalRecipes &&
             externalRecipes.map((recipe, i) => (
               <RecipePreview
@@ -118,11 +147,10 @@ function Explore() {
                 authorName={recipe.strArea || "Unknown"}
                 imageUrl={recipe.strMealThumb}
                 category={recipe.strCategory}
-                cookingTime="N/A" // MealDB does not provide cooking time
+                cookingTime="N/A"
                 cuisine={recipe.strArea}
                 id={recipe.idMeal}
-                isExternal={true} // External recipe
-                
+                isExternal={true}
               />
             ))}
         </div>

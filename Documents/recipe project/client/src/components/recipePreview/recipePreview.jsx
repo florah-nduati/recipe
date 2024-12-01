@@ -1,6 +1,73 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useQuery, useMutation } from "react-query";
+import apiBase from "../../utils/api";
 import "./recipe-preview.css";
+
+// Fetch Like Count Query Function
+const fetchLikeCount = async (id) => {
+  const response = await fetch(`${apiBase}/recipes/${id}/likes-count`);
+  if (!response.ok) {
+    throw new Error("Error fetching like count");
+  }
+  const data = await response.json();
+  return data.likes;
+};
+
+// Fetch Like Status
+const fetchLikeStatus = async (id, userId) => {
+  const response = await fetch(
+    `${apiBase}/recipes/${id}/is-liked?userId=${userId}`,
+  );
+  if (!response.ok) {
+    throw new Error("Error fetching like status");
+  }
+  const data = await response.json();
+  return data.isLiked;
+};
+
+// Like Mutation Function
+const handleLikeMutation = async (id, isLiked) => {
+  const response = await fetch(`${apiBase}/recipes/${id}/like`, {
+    method: isLiked ? "DELETE" : "POST",
+    headers: { "Content-Type": "application/json" },
+
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error liking recipe");
+  }
+};
+
+// Save Mutation Function
+const handleSaveMutation = async (id, isSaved, isExternal) => {
+  if (isExternal) {
+    if (isSaved) {
+      const savedRecipes =
+        JSON.parse(localStorage.getItem("savedRecipes")) || [];
+      const updatedRecipes = savedRecipes.filter((recipe) => recipe.id !== id);
+      localStorage.setItem("savedRecipes", JSON.stringify(updatedRecipes));
+    } else {
+      const savedRecipes =
+        JSON.parse(localStorage.getItem("savedRecipes")) || [];
+      const recipeToSave = {
+        id,
+        isExternal,
+      };
+      localStorage.setItem(
+        "savedRecipes",
+        JSON.stringify([...savedRecipes, recipeToSave]),
+      );
+    }
+  } else {
+    if (isSaved) {
+      await fetch(`${apiBase}/recipes/${id}/bookmark`, { method: "DELETE" });
+    } else {
+      await fetch(`${apiBase}/recipes/${id}/bookmark`, { method: "POST" });
+    }
+  }
+};
 
 function RecipePreview({
   title,
@@ -13,79 +80,80 @@ function RecipePreview({
   isExternal,
   onLike,
   onSave,
-  onRemove, // Added prop for parent to handle removal from bookmark page
+  onRemove,
+  isBookmarkPage,
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
-  // For external recipes, load liked/saved status from localStorage
+  const {
+    data: likeCount,
+    isLoading: likeCountLoading,
+    error: likeCountError,
+  } = useQuery({
+    queryKey: ["likeCount", id],
+    queryFn: () => fetchLikeCount(id),
+  });
+
+  const userId = localStorage.getItem("userId"); // Retrieve userId stored in localStorage
+
+  // Fetch like status using React Query
+  const { data: likeStatus, error: likeStatusError } = useQuery({
+    queryKey: ["likeStatus", id, userId],
+    queryFn: () => fetchLikeStatus(id, userId),
+    enabled: !!userId,
+  });
+
+  // Like Mutation using useMutation
+  const { mutate: handleLike } = useMutation({
+    mutationFn: (isLiked) => handleLikeMutation(id, isLiked, userId),
+    onSuccess: () => {
+      setIsLiked((prev) => !prev);
+      if (onLike) onLike(id);
+    },
+    onError: (error) => {
+      console.error("Error liking recipe:", error.message);
+    },
+  });
+
+  const { mutate: handleSave } = useMutation({
+    mutationFn: (isSaved) => handleSaveMutation(id, isSaved, isExternal),
+    onSuccess: () => {
+      setIsSaved((prev) => !prev);
+      if (onSave) onSave(id);
+      if (onRemove && isSaved) onRemove(id);
+    },
+  });
+
   useEffect(() => {
-    if (isExternal) {
-      const likedRecipes = JSON.parse(localStorage.getItem("likedRecipes")) || [];
-      const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes")) || [];
-      setIsLiked(likedRecipes.includes(id));
-      setIsSaved(savedRecipes.some((recipe) => recipe.id === id));
+    if (likeStatus !== undefined) {
+      setIsLiked(likeStatus);
     }
-  }, [id, isExternal]);
+  }, [likeStatus]);
 
-  const handleLike = () => {
-    setIsLiked((prev) => !prev);
-    if (isExternal) {
-      // Handle external recipe like status with localStorage
-      const likedRecipes = JSON.parse(localStorage.getItem("likedRecipes")) || [];
-      if (isLiked) {
-        // If already liked, remove it
-        localStorage.setItem("likedRecipes", JSON.stringify(likedRecipes.filter((recipeId) => recipeId !== id)));
-      } else {
-        // Otherwise, add it
-        localStorage.setItem("likedRecipes", JSON.stringify([...likedRecipes, id]));
-      }
-    } else {
-      // Call backend API for backend recipe (if needed)
-      onLike(id);
+  useEffect(() => {
+    if (likeCount !== undefined) {
     }
-  };
+  }, [likeCount]);
 
-  const handleSave = () => {
-    setIsSaved((prev) => !prev);
-    if (isExternal) {
-      // Handle external recipe save status with localStorage
-      const savedRecipes = JSON.parse(localStorage.getItem("savedRecipes")) || [];
-      const recipeToSave = {
-        title,
-        authorName,
-        imageUrl,
-        category,
-        cookingTime,
-        cuisine,
-        id,
-        isExternal,
-      };
-      if (isSaved) {
-        // If already saved, remove it
-        const updatedRecipes = savedRecipes.filter((recipe) => recipe.id !== id);
-        localStorage.setItem("savedRecipes", JSON.stringify(updatedRecipes));
-        if (onSave) onSave(id); // Notify parent when unsaved
-        if (onRemove) onRemove(id); // Notify parent for removal from bookmark page
-      } else {
-        // Otherwise, add it
-        localStorage.setItem("savedRecipes", JSON.stringify([...savedRecipes, recipeToSave]));
-      }
-    } else {
-      // Call backend API for backend recipe (if needed)
-      onSave(id);
-    }
-  };
+  if (likeCountLoading) return <p>Loading like count...</p>;
+  if (likeCountError) return <p>Error loading like count</p>;
+
+  if (likeStatusError) return <p>Error loading like status</p>;
 
   return (
     <div className="recipe-preview">
-      {imageUrl && <img src={imageUrl} alt={title} className="recipe-preview-image" />}
+      {imageUrl && (
+        <img src={imageUrl} alt={title} className="recipe-preview-image" />
+      )}
       <div className="recipe-preview-content">
         <h3 className="recipe-preview-title">{title}</h3>
         <p className="recipe-preview-author">By {authorName}</p>
         <p className="blog-preview-excerpt">Category: {category}</p>
         <p className="blog-preview-excerpt">⏲️: {cookingTime}</p>
         <p className="blog-preview-excerpt">Cuisine: {cuisine}</p>
+        <p className="likes-count">❤️ {likeCount} Likes</p>
+
         <Link
           to={isExternal ? `/full-recipe/${id}` : `/recipe/${id}`}
           className="read-more-link"
@@ -95,17 +163,31 @@ function RecipePreview({
 
         <div className="recipe-preview-actions">
           <button
-            onClick={handleLike}
+            onClick={() => handleLike(isLiked)}
             className={`like-btn ${isLiked ? "liked" : ""}`}
           >
             {isLiked ? "Liked" : "Like"}
           </button>
-          <button
-            onClick={handleSave}
-            className={`save-btn ${isSaved ? "saved" : ""}`}
-          >
-            {isSaved ? "Unsave" : "Save"}
-          </button>
+
+          {/* Render Save button in Explore page */}
+          {!isBookmarkPage && (
+            <button
+              onClick={() => handleSave(isSaved)}
+              className={`save-btn ${isSaved ? "saved" : ""}`}
+            >
+              {isSaved ? "Unsave" : "Save"}
+            </button>
+          )}
+
+          {/* Render Unsave button in Bookmarks page */}
+          {isBookmarkPage && (
+            <button
+              onClick={() => handleSave(isSaved)}
+              className={`save-btn ${isSaved ? "saved" : ""}`}
+            >
+              Unsave
+            </button>
+          )}
         </div>
       </div>
     </div>
