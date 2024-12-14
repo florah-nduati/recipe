@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model User {
+  id       String    @id @default(uuid())  // User ID is a String, generated using UUID
+  name     String
+  email    String    @unique               // Ensure the email is unique
+  password String
+  bookings Booking[] // One-to-many relationship with bookings, where a user can have multiple bookings
+
+  @@map("users")      // Map to the "users" table in the database
+}
+
+model Booking {
+  id            String   @id @default(uuid())  // Booking ID is a String, generated using UUID
+  userId        String   // Foreign key to the User's id
+  user          User     @relation(fields: [userId], references: [id]) // Defines the relation
+  date          DateTime
+  people        Int
+  packageType   String
+  tourType      String
+  paymentOption String
+  message       String?  // Optional message field
+  createdAt     DateTime @default(now())  // Automatically set to the current time when the booking is created
+
+  @@map("bookings")     // Map to the "bookings" table in the database
+}
